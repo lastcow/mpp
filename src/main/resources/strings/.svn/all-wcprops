@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/project/!svn/ver/12694/mind/MPP/src/main/resources/strings
+END
+projStrings_jp.properties
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/project/!svn/ver/13627/mind/MPP/src/main/resources/strings/projStrings_jp.properties
+END
+validateStrings.properties
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/project/!svn/ver/13588/mind/MPP/src/main/resources/strings/validateStrings.properties
+END
+projStrings_zh.properties
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/project/!svn/ver/13627/mind/MPP/src/main/resources/strings/projStrings_zh.properties
+END
+projStrings.properties
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/project/!svn/ver/13627/mind/MPP/src/main/resources/strings/projStrings.properties
+END
+projStrings_en.properties
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/project/!svn/ver/13627/mind/MPP/src/main/resources/strings/projStrings_en.properties
+END

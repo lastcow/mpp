@@ -1,0 +1,26 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+      <ui:composition template="templates/sitetemplate_error.xhtml" >
+        <ui:define name="body">
+            <!-- Error info area -->
+            <h:form>
+				<div class="wrapper">
+				    <div class="errorPage">
+				        <h2 class="red errorTitle"><span>#{projStrings['error_title']}</span></h2>
+				        <h1>404</h1>
+				        <span class="bubbles"></span>
+				        <p>#{projStrings['error_404']}</p>
+				        <div class="backToDash">
+				        	<h:commandLink action="dashboard" class="seaBtn button">
+	                            Back to Dashboard
+	                        </h:commandLink>
+				        </div>
+				    </div>
+				</div>
+			</h:form>
+        </ui:define>
+    </ui:composition>
+</html>

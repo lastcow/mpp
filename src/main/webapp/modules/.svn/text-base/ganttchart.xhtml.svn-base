@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:composition template="../WEB-INF/templates/sitetemplate_main.xhtml"
+		xmlns:w="http://java.sun.com/jsf/composite/widgets">
+		<ui:define name="title">
+			Project @ Web - Main
+		</ui:define>
+		<ui:define name="headnav">
+			<div class="middleNav">
+		    	<ul>
+		        	<li class="iMes"><a href="#" title=""><span>Support tickets</span></a><span class="numberMiddle">9</span></li>
+		            <li class="iStat"><a href="#" title=""><span>Statistics</span></a></li>
+		            <li class="iUser"><a href="#" title=""><span>User list</span></a></li>
+		            <li class="iOrders"><a href="#" title=""><span>Billing panel</span></a></li>
+		        </ul>
+		    </div>
+		</ui:define>
+		<ui:define name="body">
+			<div class="title"><h5>#{projStrings['menu_main']}</h5></div>
+
+			<!-- Statistics -->
+	        <div class="stats">
+	        	<ul>
+	            	<li><a href="#" class="count grey" title="">10</a><span>Projects in progress</span></li>
+	            	<li><a href="#" class="count grey" title="">3</a><span>Resources on bench</span></li>
+	                <li class="last"><a href="#" class="count grey" title="">48</a><span>Resources allocated</span></li>
+	            </ul>
+	            <div class="fix"></div>
+	        </div>
+		</ui:define>
+	</ui:composition>
+</html>

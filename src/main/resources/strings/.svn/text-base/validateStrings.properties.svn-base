@@ -1,0 +1,8 @@
+project.name.emptyMessage=Name required
+project.startDate.emptyMessage=Project start date required
+
+task.name.emptyMessage=Task name can't be null
+task.startDate.emptyMessage=Task start date can't be null
+task.estimatedHour.emptyMessage=Task estimated hour can't be null
+task.priority.emptyMessage=Task priority can't be null
+task.status.emptyMessage=Task status can't be null

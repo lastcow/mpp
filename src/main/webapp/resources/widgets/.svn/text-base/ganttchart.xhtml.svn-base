@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+	<cc:interface>
+	
+	</cc:interface>
+	
+	<cc:implementation>
+		<div class="heading">
+
+            <h3>Project Gantt</h3>                    
+
+            <div class="resBtnSearch">
+                <a href="#"><span class="icon16 brocco-icon-search"></span></a>
+            </div>
+            
+            <ul class="breadcrumb">
+                <li>You are here:</li>
+                <li>
+                    <a href="#" class="tip" title="back to dashboard">
+                        <span class="icon16 icomoon-icon-screen"></span>
+                    </a> 
+                    <span class="divider">
+                        <span class="icon16 icomoon-icon-arrow-right"></span>
+                    </span>
+                </li>
+                <li class="active">Project Ganttchart</li>
+            </ul>
+
+        </div><!-- End .heading-->
+
+        <!-- Build page from here: -->
+        <div class="row-fluid">
+
+            <div class="span12">
+                <div class="centerContent">
+          			<div id="ganttchartdiv" style="height: 600px;"/>
+          			<div class="row-fluid">
+          				<div class="span12" style="margin-top: 13px;">
+          					<button class="btn btn-inverse" href="#">
+          						<span class="icon16 icomoon-icon-loop white"></span>
+          						Refresh
+          					</button>
+          					<button class="btn btn-inverse" href="#">
+          						<span class="icon16 icomoon-icon-checkmark white"></span>
+          						Save
+          					</button>
+          					<button id="btnnewtask" class="btn btn-inverse" href="#">
+          						<span class="icon16 icomoon-icon-eye white"></span>
+          						New Task
+          					</button>
+          				</div>
+          			</div>
+                </div>
+            </div><!-- End .span8 -->
+
+        </div><!-- End .row -->
+
+        <div id="newprojectformdiv"  class="row-fluid" style="margin-top: 20px; display: none;">
+
+            <div class="span12">
+
+                <div class="box">
+
+                    <div class="title">
+
+                        <h4>
+                            <span class="icon16 brocco-icon-grid"></span>
+                            <span>New Project</span>
+                        </h4>
+                        
+                    </div>
+                    <div class="content">
+                       
+                        <form class="form-horizontal" id="form-validate" action="#" >
+                            
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Project Name</label>
+                                        <input class="span9" id="required" name="required" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Project Description</label>
+                                        <textarea class="span9 limit uniform" id="textarea2" rows="3" maxlength="100"></textarea>
+                                    </div>
+                                </div>
+                            </div> 
+                            
+                            <div class="form-row row-fluid">
+                                
+                                    <div class="span12">
+                                        <div class="row-fluid">
+                                            <div class="form-actions">
+                                            <div class="span3"></div>
+                                            <div class="span9 controls">
+                                                <button type="submit" class="btn marginR10">Save project</button>
+                                                <button id="btnnewprojcancel" class="btn btn-danger">Cancel</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </form>
+                     
+                    </div>
+
+                </div><!-- End .box -->
+
+            </div><!-- End .span12 -->
+
+        </div><!-- End .row-fluid --> 
+
+        <div id="newtaskformdiv"  class="row-fluid" style="margin-top: 20px; display: none;">
+
+            <div class="span12">
+
+                <div class="box">
+
+                    <div class="title">
+
+                        <h4>
+                            <span class="icon16 brocco-icon-grid"></span>
+                            <span>New Task</span>
+                        </h4>
+                        
+                    </div>
+                    <div class="content">
+                       
+                        <form class="form-horizontal" id="form-validate" action="#" >
+                            
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Task Name</label>
+                                        <input class="span9" id="required" name="required" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Task Type</label>
+                                        <select class="span9" >
+                                            <option selected="selected">Group</option>
+                                            <option>Task</option>
+                                            <option>Sub Task</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Task Description</label>
+                                        <textarea class="span9 limit uniform" id="textarea2" rows="3" maxlength="100"></textarea>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Start Date</label>
+                                        <input type="text" id="datepicker" class="span3" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Scheduled End Date</label>
+                                        <input type="text" id="datepicker" class="span3"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Parent Task</label>
+                                        <input class="span9" id="required" name="required" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row row-fluid">
+                                
+                                    <div class="span12">
+                                        <div class="row-fluid">
+                                            <div class="form-actions">
+                                            <div class="span3"></div>
+                                            <div class="span9 controls">
+                                                <button type="submit" class="btn marginR10">Save task</button>
+                                                <button id="btnnewtaskcancel" class="btn btn-danger">Cancel</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </form>
+                     
+                    </div>
+
+                </div><!-- End .box -->
+
+            </div><!-- End .span12 -->
+
+        </div><!-- End .row-fluid --> 
+	</cc:implementation>>
+
+</ui:composition>

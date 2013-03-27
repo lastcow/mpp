@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/project/!svn/ver/12898/mind/MPP/src/main/webapp/WEB-INF/templates
+END
+sitetemplate_login.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/project/!svn/ver/16302/mind/MPP/src/main/webapp/WEB-INF/templates/sitetemplate_login.xhtml
+END
+default.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/project/!svn/ver/12640/mind/MPP/src/main/webapp/WEB-INF/templates/default.xhtml
+END
+sitetemplate.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/project/!svn/ver/12658/mind/MPP/src/main/webapp/WEB-INF/templates/sitetemplate.xhtml
+END
+sitetemplate_settings.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/project/!svn/ver/16302/mind/MPP/src/main/webapp/WEB-INF/templates/sitetemplate_settings.xhtml
+END
+sitetemplate_main.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/project/!svn/ver/16302/mind/MPP/src/main/webapp/WEB-INF/templates/sitetemplate_main.xhtml
+END
+sitetemplate_error.xhtml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/project/!svn/ver/12658/mind/MPP/src/main/webapp/WEB-INF/templates/sitetemplate_error.xhtml
+END

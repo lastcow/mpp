@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.org/seam/faces"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:composition template="../WEB-INF/templates/sitetemplate_main.xhtml"
+		xmlns:w="http://java.sun.com/jsf/composite/widgets">
+		<ui:define name="title">
+			Project @ Web - Main
+		</ui:define>
+
+		<ui:define name="customJS">
+			<script type="text/javascript" src="#{request.contextPath}/resources/plugins/tables/jquery.dataTables.js"></script>
+			<script type="text/javascript" src="#{request.contextPath}/resources/js/modules/resource/resource.js"></script>
+		</ui:define>
+
+
+		<ui:define name="body">
+			<div class="title"><h5>#{projStrings['menu_resource']}</h5></div>
+			
+            <div class="body">
+	            <a href="javascript:void(0);" title="" class="btnIconLeft mr10 mt5" id="btnNewResource"><img src="#{request.contextPath}/resources/images/icons/color/application-plus.png" alt="" class="icon" /><span>New Resource</span></a>
+            </div>
+            <h:panelGroup layout="block" id="divResourceForm" style="display:none;" class="mainForm">
+                <h:form id="resourceForm" prependId="false">
+                    <h:inputHidden value="#{resourceController.resource.userId}"/>
+                    <div style="display:none;" id="hiddenDiv">
+                        <h:outputLabel id="inputHiddenResourceCnt" value="#{resourceController.resources.size()}" />
+                    </div>
+                    <fieldset>
+		                <div class="widget first mainForm">
+                            <div class="rowElem">
+                                <h:outputLabel value="Username:" for="txtResourceName" ><span class="req">*</span></h:outputLabel>
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputText id="txtResourceName" value="#{resourceController.resource.userName}"
+                                                 styleClass='#{component.valid?"":"invalid"}' style="width:200px !important;"
+                                            requiredMessage="Username is required">
+                                        <f:validateRequired />
+                                    </h:inputText>
+                                    <h:message for="txtResourceName" styleClass="errorMsg"/>
+                                </div>
+                            </div>
+                            <div class="rowElem">
+                                <h:outputLabel value='Email:' for='txtResourceEmail'><span class="req">*</span></h:outputLabel>
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputText id="txtResourceEmail" value="#{resourceController.resource.email}"
+                                                 styleClass='#{component.valid?"":"invalid"}' style="width: 280px !important;"
+                                                 validatorMessage="Email required">
+                                        <f:validateRequired/>
+                                    </h:inputText>
+                                    <h:message for="txtResourceEmail" styleClass="errorMsg"/>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+
+                            <h:inputHidden id="validateFlag" />
+                            <s:validateForm validatorId="userValidator" />
+                            <h:commandButton id="btnResourceDialogClose" value=""  action="#{resourceController.reset}" style="display:none;" immediate="true">
+                                <f:ajax execute="" onevent="function(data) {resetDialogAfterClosed();}" render="@form"/>
+                            </h:commandButton>
+	                        <h:commandButton action="#{resourceController.create}" value="Create Resource" id="btnResourceSubmit"
+                                             styleClass="greyishBtn submitForm" style="display: none;">
+		                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {resourceEventHandler(data);}" render="@form :tblResource"/>
+	                        </h:commandButton>
+                            <h:commandButton action="#{resourceController.update}" value="Modify Resource" id="btnEditResourceSubmit"
+                                             styleClass="greyishBtn submitForm" style="display: none;">
+                                <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {resourceEventHandler(data);}" render="@form :tblResource"/>
+                            </h:commandButton>
+
+			                <div class="fix"></div>
+		                </div>
+		            </fieldset>
+                </h:form>
+            </h:panelGroup>
+            
+	            <div class="fix"></div>
+			<div class="table" id="tblDiv">
+                <h:form prependId='false'>
+                    <h:inputHidden id="deleteUserIdHidden" value="#{resourceController.deleteUserId}"/>
+                    <h:commandButton id="btnDeleteUserHidden" value="hidden delete project" action="#{resourceController.delete}" style="display:none;">
+                        <f:ajax execute="deleteUserIdHidden" onevent="function(data) {deleteUserEventHandler(data);}" render=":resourceForm:inputHiddenResourceCnt :tblResource "/>
+                    </h:commandButton>
+                </h:form>
+	        	<div class="head"><h5 class="iUsers">Resources list</h5></div>
+                <h:dataTable id="tblResource" value="#{resourceController.resources}" var="user"
+                             styleClass='display'
+                             rowClasses='gradeA, gradeA'>
+                    <h:column>
+                        <f:facet name="header">Username</f:facet>
+                        <h:form prependId="false">
+                            <h:commandLink action="#{resourceController.setEditResource(user.userId)}">
+                                <h:outputText value="#{user.userName}" />
+                                <f:ajax execute="" onevent="function(data) {editResource(data);}" render=":resourceForm" />
+                            </h:commandLink>
+                        </h:form>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">EMail</f:facet>
+                        <h:outputText value="#{user.email}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Action</f:facet>
+                        <h:form prependId='false'>
+                            <h:commandLink>
+                                <img class="btnDeleteProject mr5" src="#{request.contextPath}/resources/images/icons/dark/trash.png" />
+                                <f:ajax execute="@form" onevent="function(data) {confirmDelete(data, '#{user.userId}', '#{user.userName}');}" />
+                            </h:commandLink>
+                        </h:form>
+                    </h:column>
+                </h:dataTable>
+	        </div>
+		</ui:define>
+	</ui:composition>
+</html>

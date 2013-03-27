@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:composition template="../WEB-INF/templates/sitetemplate_main.xhtml"
+		xmlns:w="http://java.sun.com/jsf/composite/widgets">
+		<ui:define name="title">
+			Project @ Web - Main
+		</ui:define>
+		
+		<ui:define name="customJS">
+			<script type="text/javascript" src="#{request.contextPath}/resources/js/modules/dashboard/dashboard-ck.js"></script>
+			<script type="text/javascript" src="#{request.contextPath}/resources/plugins/ui/jquery.progress.js"></script>
+			<script type="text/javascript" src="#{request.contextPath}/resources/plugins/tables/jquery.dataTables.js"></script>
+			<script type="text/javascript" src="#{request.contextPath}/resources/plugins/tables/colResizable.min.js"></script>
+		</ui:define>
+
+
+		<ui:define name="body">
+			<div class="title"><h5>#{projStrings['menu_main']}</h5></div>
+
+			<!-- Statistics -->
+	        <div class="stats">
+	        	<ul>
+	            	<li><a href="javascript:void(0);" class="count blue" title=""><h:outputText value='#{totalProjectsInProgress}'><f:convertNumber pattern="#,###"/></h:outputText></a><span>Projects in progress</span></li>
+	            	<li><a href="javascript:void(0);" class="count green" title=""><h:outputText value='#{totalProjectsCompleted}'><f:convertNumber pattern="#,###"/></h:outputText></a><span>Projects completed</span></li>
+	            	<li><a href="javascript:void(0);" class="count red" title=""><h:outputText value='#{totalResourcesOnBench}'><f:convertNumber pattern="#,###"/></h:outputText></a><span>Resources on bench</span></li>
+	                <li class="last"><a href="javascript:void(0);" class="count grey" title=""><h:outputText value='#{totalResourcesAllocated}'><f:convertNumber pattern="#,###"/></h:outputText></a><span>Resources allocated</span></li>
+	            </ul>
+	            <div class="fix"></div>
+	        </div>
+	        
+		</ui:define>
+		
+	</ui:composition>
+</html>

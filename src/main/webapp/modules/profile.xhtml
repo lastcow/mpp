@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:composition template="../WEB-INF/templates/sitetemplate_main.xhtml"
+		xmlns:w="http://java.sun.com/jsf/composite/widgets">
+		<ui:define name="title">
+			Project @ Web - User Profile
+		</ui:define>
+
+		<ui:define name="customJS">
+			<script type="text/javascript" src="/resources/js/modules/profile/userProfile.js"></script>
+		</ui:define>
+
+		<ui:define name="body">
+			<div class="title"><h5>User profile (#{profileController.currentUser.userName})</h5></div>
+			
+			<div class="widgets">
+				<div style="float: right; width: 25%;">
+				  <!-- User info -->
+				  <div class="widget">
+				  	<div class="head">
+				  		<h5 class="iUser">User detailed information</h5>
+				  	</div>
+				  	<table cellpadding="0" cellspacing="0" width="100%" class="tableStatic">
+                        <tbody>
+                            <tr class="noborder">
+                                <td width="25%">Username:</td>
+                                <td align="right"><strong class="green">#{profileController.currentUser.userName}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Email:</td>
+                                <td align="right"><span class="green">#{profileController.currentUser.email}</span></td>
+                            </tr>
+                        </tbody>
+                    </table> 
+				  </div>
+				</div>
+				
+				<div style="float: left; width:74%; margin-right: 2px;">
+					<!-- user customize -->
+					<h:form styleClass="mainForm">
+						<fieldset>
+							<div class="widget">
+								<div class="head"><h5 class="iSettings">User customize settings</h5></div>
+								<div class="rowElem noborder">
+									<h:outputLabel for="cmbSettingsMainPage">Home page:</h:outputLabel>
+									<div class="formRight">
+										<h:selectOneMenu id="cmbSettingsMainPage">
+											<f:selectItem itemValue="#{null}" itemLabel="Please select page ..." />
+										</h:selectOneMenu>
+									</div>
+									<div class="fix"></div>
+								</div>
+								
+								<h:commandButton value="Modify" styleClass="greyishBtn submitForm" />
+								<div class="fix"></div>
+							</div>
+						</fieldset>
+					</h:form>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</html>

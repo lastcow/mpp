@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+	<cc:interface>
+		<cc:attribute name="tasks" required="true"></cc:attribute>
+	</cc:interface>
+	
+	<cc:implementation>
+		<div class="widget">
+        	<div class="head"><h5 class="iChart8">My tasks (latest 10)</h5><div class="num"><a href="javascript:void(0);" class="blueNum">Total 18</a></div></div>
+<!--
+        	<ul id="myList">
+        		<ui:repeat var="task" value="#{cc.attrs.tasks}" varStatus="status">
+        			<li><a href="#">#{task.taskName}</a>
+        				<ul class="listData">
+        					<li><a href="#" title="">Task desc here</a></li>
+        					<li><span class="red">#{task.taskDurationHour} hours left</span></li>
+        					<li><span class="cNote">
+        						<h:outputText value="#{task.taskStartDate}">
+        							<f:convertDateTime pattern="yyyy.MM.dd" />
+        						</h:outputText>
+        					</span></li>
+        				</ul>
+        			</li>
+        		</ui:repeat>
+           	</ul>
+-->
+           	<ui:repeat var="task" value="#{cc.attrs.tasks}" varStatus="status">
+	           	<div class="supTicket nobg">
+	            	<div class="issueType">
+	                	<span class="issueInfo">#{task.taskName}</span>
+	                    <span class="issueNum">[ <h:outputText value="#{task.taskEstimatedStartDate}">
+        								<f:convertDateTime pattern="yyyy.MM.dd" />
+        							</h:outputText> ]</span>
+	                    <div class="fix"></div>
+	                </div>
+	                
+	                <div class="issueSummary">
+	                    <div class="ticketInfo">
+	                    	<ul>
+	                        	<li><a href="#" title="">#{task.taskDesc}</a></li>
+	                            <li class="even"><strong class="red">[ <h:outputText value="#{task.priority.priorityName}" /> ]</strong></li>
+	                            <li>Status: <strong class="green">[ <h:outputText value="#{task.status.statusName}" /> ]</strong></li>
+	                            <li class="even">
+	                            	<h:outputText value="#{task.taskActualStartDate}">
+        								<f:convertDateTime pattern="yyyy.MM.dd" />
+        							</h:outputText>
+        						</li>
+	                        </ul>
+	                        <div class="fix"></div>
+	                    </div>
+	                    <div class="fix"></div>
+	                </div> 
+	            </div>
+           	</ui:repeat>
+		</div>
+	</cc:implementation>>
+
+</ui:composition>

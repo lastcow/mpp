@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+	<cc:interface>
+	
+	</cc:interface>
+	
+	<cc:implementation>
+		<div class="heading">
+
+            <h3>Resources Calendar</h3>                    
+
+            <div class="resBtnSearch">
+                <a href="#"><span class="icon16 brocco-icon-search"></span></a>
+            </div>
+            
+            <ul class="breadcrumb">
+                <li>You are here:</li>
+                <li>
+                    <a href="#" class="tip" title="back to dashboard">
+                        <span class="icon16 icomoon-icon-screen"></span>
+                    </a> 
+                    <span class="divider">
+                        <span class="icon16 icomoon-icon-arrow-right"></span>
+                    </span>
+                </li>
+                <li class="active">Resource Calendar</li>
+            </ul>
+
+        </div><!-- End .heading-->
+
+        <!-- Build page from here: -->
+        <div class="row-fluid">
+
+            <div class="span12">
+                <div class="centerContent">
+          			<div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:600px;'>
+                        <div class="dhx_cal_navline">
+                            <div class="dhx_cal_prev_button">&nbsp;</div>
+                            <div class="dhx_cal_next_button">&nbsp;</div>
+                            <div class="dhx_cal_today_button"></div>
+                            <div class="dhx_cal_date"></div>
+                            <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+                            <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+                            <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+                        </div>
+                        <div class="dhx_cal_header">
+                        </div>
+                        <div class="dhx_cal_data">
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End .span8 -->
+
+        </div><!-- End .row -->
+
+        <div id="newresourceformdiv"  class="row-fluid" style="margin-top: 20px; display: none;">
+
+            <div class="span12">
+
+                <div class="box">
+
+                    <div class="title">
+
+                        <h4>
+                            <span class="icon16 brocco-icon-grid"></span>
+                            <span>New Resource</span>
+                        </h4>
+                        
+                    </div>
+                    <div class="content">
+                       
+                        <form class="form-horizontal" id="form-validate" action="#" >
+                            
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Resource Name</label>
+                                        <input class="span9" id="required" name="required" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Resouce Description</label>
+                                        <textarea class="span9 limit uniform" id="textarea2" rows="3" maxlength="100"></textarea>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="form-row row-fluid">
+                                <div class="span12">
+                                    <div class="row-fluid">
+                                        <label class="form-label span3" for="required">Resouce Type</label>
+                                        <select class="span9" >
+                                            <option selected="selected">Human</option>
+                                            <option>Material</option>
+                                            <option>Document</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> 
+                            
+                            <div class="form-row row-fluid">
+                                
+                                    <div class="span12">
+                                        <div class="row-fluid">
+                                            <div class="form-actions">
+                                            <div class="span3"></div>
+                                            <div class="span9 controls">
+                                                <button type="submit" class="btn marginR10">Save resource</button>
+                                                <button id="btnnewresourcecancel" class="btn btn-danger">Cancel</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        </form>
+                     
+                    </div>
+
+                </div><!-- End .box -->
+
+            </div><!-- End .span12 -->
+
+        </div><!-- End .row-fluid --> 
+	</cc:implementation>>
+
+</ui:composition>

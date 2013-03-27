@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.org/seam/faces"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:composition template="../../WEB-INF/templates/sitetemplate_settings.xhtml"
+		xmlns:w="http://java.sun.com/jsf/composite/widgets">
+		<ui:define name="title">
+			Project @ Web - Main
+		</ui:define>
+
+        <ui:define name="customCSS">
+        </ui:define>
+		<ui:define name="customJS">
+            <script type="text/javascript" language="JavaScript" src="#{request.contextPath}/resources/plugins/ui/jquery.ui.datepicker-ja.js"></script>
+			<script type="text/javascript" src="#{request.contextPath}/resources/js/modules/settings/calendar.js"></script>
+            <script type="text/javascript" src="#{request.contextPath}/resources/plugins/calendar/fullcalendar.min.js"></script>
+		</ui:define>
+
+
+		<ui:define name="headnav">
+			<div class="middleNav">
+		    	<ul>
+		        	<li class="iMes"><a href="#" title=""><span>Support tickets</span></a><span class="numberMiddle">9</span></li>
+		            <li class="iStat"><a href="#" title=""><span>Statistics</span></a></li>
+		            <li class="iUser"><a href="#" title=""><span>User list</span></a></li>
+		            <li class="iOrders"><a href="#" title=""><span>Billing panel</span></a></li>
+		        </ul>
+		    </div>
+		</ui:define>
+		<ui:define name="body">
+			<div class="title"><h5>Holiday setting</h5></div>
+
+            <div class="body">
+                <a href="javascript:void(0);" title="" class="btnIconLeft mr10 mt5" id="btnNewHoliday"><img src="#{request.contextPath}/resources/images/icons/color/application-plus.png" alt="" class="icon" /><span>New holiday</span></a>
+            </div>
+
+            <h:panelGroup layout="block" id="divNewHoliday" style="display:none;" styleClass="mainForm">
+                <h:form id='holidayForm' prependId='false'>
+                    <h:inputHidden value="#{calendarController.newHoliday.holidayId}"/>
+                    <h:commandButton id="btnHolidayDialogClose" value=""  action="#{calendarController.postInit}" style="display:none;" immediate="true">
+                        <!-- <f:ajax execute="@form" event="click"/> -->
+                        <f:ajax execute="" onevent="function(data) {resetDialogAfterClosed();}" render="holidayForm"/>
+                    </h:commandButton>
+                    <fieldset>
+                        <div class="widget first mainForm">
+                            <!--<div class="head"><h5 class="iApplicationPlus">Add holiday</h5>-->
+                                <!--<div class="btn"><a href="javascript:void(0);" id="hrefNewHolidayPanelClose"><img src="#{request.contextPath}/resources/images/icons/color/arrow-in.png" alt="" class="icon" /></a></div>-->
+                            <!--</div>-->
+                            <div class="rowElem">
+                                <h:outputLabel for='txtNewHolidayName'>Name<span class="req">*</span></h:outputLabel>
+                                <div class="formRight" style="margin:0px; text-align: left;">
+                                    <h:inputText id='txtNewHolidayName' value='#{calendarController.newHoliday.holidayName}' style='width:280px !important;'
+                                                 styleClass='#{component.valid?"":"invalid"}'
+                                                 requiredMessage='Name required'>
+                                        <f:validateRequired />
+                                    </h:inputText>
+                                    <h:message for="txtNewHolidayName" styleClass="errorMsg" />
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            <div class="rowElem">
+                                <h:outputLabel for="txtNewHolidayStartDate">Start date<span class="req">*</span></h:outputLabel>
+                                <div class="formRight" style="margin:0px; text-align: left;">
+                                    <h:inputText id="txtNewHolidayStartDate" value="#{calendarController.newHoliday.startDate}" style="width:100px !important;"
+                                                 styleClass='#{component.valid?"":"invalid"}'
+                                                 requiredMessage="Holiday start date is required">
+                                        <f:validateRequired/>
+                                        <f:convertDateTime pattern="yyyy/MM/dd" />
+                                    </h:inputText>
+                                    <h:message for="txtNewHolidayStartDate" styleClass="errorMsg"/>
+                                </div>
+                                <div class="fix"/>
+                            </div>
+                            <div class="rowElem">
+                                <h:outputLabel for="txtNewHolidayEndDate">End date</h:outputLabel>
+                                <div class="formRight" style="margin:0px; text-align: left;">
+                                    <h:inputText id="txtNewHolidayEndDate" value="#{calendarController.newHoliday.endDate}" style=" width:100px !important;"
+                                                 styleClass='#{component.valid?"":"invalid"}'>
+                                        <f:convertDateTime pattern="yyyy/MM/dd" />
+                                    </h:inputText>
+                                    <h:message for="txtNewHolidayEndDate" styleClass="errorMsg"/>
+                                </div>
+                                <div class="fix"/>
+                            </div>
+                            <div class="rowElem">
+                                <h:outputLabel for="txtNewHolidayDesc">Description</h:outputLabel>
+                                <div class="formRight" style="margin:0px; text-align: left;">
+                                    <h:inputTextarea rows="5" id="txtNewHolidayDesc" value="#{calendarController.newHoliday.desc}" style="width:280px !important;"
+                                                     styleClass='#{component.valid?"":"invalid"}'>
+                                        <f:validateLength maximum="400"/>
+                                    </h:inputTextarea>
+                                    <h:message for="txtNewHolidayDesc" styleClass="errorMsg"/>
+                                </div>
+
+                                <div class="fix"/>
+                            </div>
+                            <s:validateForm fields="startDate=txtNewHolidayStartDate endDate=txtNewHolidayEndDate desc=txtNewHolidayDesc" validatorId="calendarValidator" />
+                            <h:commandButton id="btnNewHolidaySubmit" value="Create Holiday" styleClass="greyishBtn submitForm" action="#{calendarController.create}" style="display:none;">
+                                <!-- <f:ajax execute="@form" event="click"/> -->
+                                <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {holidayEventHandler(data);}" render="@form :tblHoliday"/>
+                            </h:commandButton>
+                            <h:commandButton id="btnEditHolidaySubmit" value="Modify Holiday" styleClass="greyishBtn submitForm" action="#{calendarController.update}" style="display:none;">
+                                <!-- <f:ajax execute="@form" event="click"/> -->
+                                <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {holidayEventHandler(data);}" render="@form :tblHoliday"/>
+                            </h:commandButton>
+                            <div class="fix"></div>
+                        </div>
+                    </fieldset>
+                </h:form>
+            </h:panelGroup>
+
+            <!-- CalendarDto -->
+            <div class="widgets">
+                <div style="float:left; width:30%; margin-right: 5px;">
+                    <div class ="widget">
+                        <div class="head"><h5 class="">Holiday List</h5></div>
+                        <h:form prependId='false'>
+                            <h:inputHidden id="deleteHolidayIdHidden" value="#{calendarController.selectedHolidayId}"/>
+                            <h:commandButton id="btnDeleteHolidayHidden" value="hidden delete holiday" action="#{calendarController.delete}" style="display:none;">
+                                <f:ajax execute="deleteHolidayIdHidden" onevent="function(data) {deleteHolidayEventHandler(data);}" render=":tblHoliday"/>
+                            </h:commandButton>
+                        </h:form>
+                        <h:dataTable value="#{calendarController.holidayList}" var= "holiday" styleClass="tableStatic"
+                                id="tblHoliday" columnClasses="dateColumn, nameColumn, functionColumn">
+
+                            <h:column>
+                                <h:outputText value="#{holiday.startDate}">
+                                    <f:convertDateTime pattern="MM#{projStrings['unit_month']}dd#{projStrings['unit_day']}"/>
+                                </h:outputText>
+                                <h:outputText value="~" rendered="#{not empty holiday.endDate}"/>
+                                <h:outputText value="#{holiday.endDate}" rendered="#{not empty holiday.endDate}">
+                                    <f:convertDateTime pattern="MM#{projStrings['unit_month']}dd#{projStrings['unit_day']}"/>
+                                </h:outputText>
+                            </h:column>
+                            <h:column>
+                                <h:form prependId="false">
+                                    <h:commandLink action="#{calendarController.setSelectedHoliday(holiday)}">
+                                        <h:outputText value="#{holiday.holidayName}" />
+                                        <f:ajax execute="@form" onevent="function(data) {editHoliday(data);}" render=":holidayForm" />
+                                    </h:commandLink>
+                                </h:form>
+                            </h:column>
+                            <h:column>
+                                <h:form prependId="false">
+                                    <h:commandLink>
+                                        <img class="btnDeleteProject mr5" src="#{request.contextPath}/resources/images/icons/dark/trash.png" />
+                                        <f:ajax execute="@form" onevent="function(data) {confirmDelete(data, '#{holiday.holidayId}', '#{holiday.holidayName}');}" />
+                                    </h:commandLink>
+                                </h:form>
+                            </h:column>
+                        </h:dataTable>
+                    </div>
+                </div>
+
+                <div style="float:right; width:69%;">
+                    <div class="widget">
+                        <div class="head"><h5 class="iDayCalendar">Holiday Calendar</h5></div>
+                        <h:panelGroup layout="block" id="calendar" />
+                    </div>
+                </div>
+
+            </div>
+
+		</ui:define>
+	</ui:composition>
+</html>

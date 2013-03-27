@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/project/!svn/ver/12658/mind/MPP/src/main/java/com/projectportal/util/converter
+END
+StatusConverter.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/project/!svn/ver/14265/mind/MPP/src/main/java/com/projectportal/util/converter/StatusConverter.java
+END
+DepartmentConverter.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/project/!svn/ver/14424/mind/MPP/src/main/java/com/projectportal/util/converter/DepartmentConverter.java
+END
+PriorityConverter.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/project/!svn/ver/12658/mind/MPP/src/main/java/com/projectportal/util/converter/PriorityConverter.java
+END
+TaskConverter.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/project/!svn/ver/13627/mind/MPP/src/main/java/com/projectportal/util/converter/TaskConverter.java
+END
+ProjectConverter.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/project/!svn/ver/15695/mind/MPP/src/main/java/com/projectportal/util/converter/ProjectConverter.java
+END
+UserConverter.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/project/!svn/ver/13628/mind/MPP/src/main/java/com/projectportal/util/converter/UserConverter.java
+END

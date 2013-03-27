@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:cc="http://java.sun.com/jsf/composite">
+
+	<cc:interface>
+	
+	</cc:interface> 
+	
+	<cc:implementation>
+		<div class="sidebar-widget">
+            <h5 class="title">Project Management</h5>
+            <div class="content">
+                <div class="row-fluid">
+                	<div class="span12">
+						<div class="todo">
+						 <h4>Projects List </h4>
+	                            <ul>
+	                                <li class="clearfix">
+	                                    <div class="txt">
+	                                    	<span class="label label-info" style="margin-right: 5px;">40%</span>
+	                                    	Project 1
+	                                    </div>
+	                                    <div class="controls">
+	                                        <a href="#" title="Edit task" class="tip"><span class="icon12 icomoon-icon-pencil"></span></a>
+	                                        <a href="#" title="Remove task" class="tip"><span class="icon12 icomoon-icon-remove"></span></a>
+	                                    </div>
+	                                </li>
+	                                <li class="clearfix">
+	                                    <div class="txt">
+	                                    	<span class="label label-info" style="margin-right: 5px;">40%</span>
+	                                    	Project 2
+	                                    </div>
+	                                    <div class="controls">
+	                                        <a href="#" title="Edit task" class="tip"><span class="icon12 icomoon-icon-pencil"></span></a>
+	                                        <a href="#" title="Remove task" class="tip"><span class="icon12 icomoon-icon-remove"></span></a>
+	                                    </div>
+	                                </li><li class="clearfix">
+	                                    <div class="txt">
+	                                    	<span class="label label-info" style="margin-right: 5px;">40%</span>
+	                                    	Project 3
+	                                    </div>
+	                                    <div class="controls">
+	                                        <a href="#" title="Edit task" class="tip"><span class="icon12 icomoon-icon-pencil"></span></a>
+	                                        <a href="#" title="Remove task" class="tip"><span class="icon12 icomoon-icon-remove"></span></a>
+	                                    </div>
+	                                </li><li class="clearfix">
+	                                    <div class="txt">
+	                                    	<span class="label label-info" style="margin-right: 5px;">40%</span>
+	                                    	Project 4
+	                                    </div>
+	                                    <div class="controls">
+	                                        <a href="#" title="Edit task" class="tip"><span class="icon12 icomoon-icon-pencil"></span></a>
+	                                        <a href="#" title="Remove task" class="tip"><span class="icon12 icomoon-icon-remove"></span></a>
+	                                    </div>
+	                                </li><li class="clearfix">
+	                                    <div class="txt">
+	                                    	<span class="label label-info" style="margin-right: 5px;">40%</span>
+	                                    	Project 5
+	                                    </div>
+	                                    <div class="controls">
+	                                        <a href="#" title="Edit task" class="tip"><span class="icon12 icomoon-icon-pencil"></span></a>
+	                                        <a href="#" title="Remove task" class="tip"><span class="icon12 icomoon-icon-remove"></span></a>
+	                                    </div>
+	                                </li><li class="clearfix">
+	                                    <div class="txt">
+	                                    	<span class="label label-info" style="margin-right: 5px;">40%</span>
+	                                    	Project 6
+	                                    </div>
+	                                    <div class="controls">
+	                                        <a href="#" title="Edit task" class="tip"><span class="icon12 icomoon-icon-pencil"></span></a>
+	                                        <a href="#" title="Remove task" class="tip"><span class="icon12 icomoon-icon-remove"></span></a>
+	                                    </div>
+	                                </li>
+	                            </ul>
+						</div>
+					</div>
+				</div>
+            </div>
+
+        </div><!-- End .sidenav-widget -->
+
+        <div class="sidebar-widget">
+        	<h5 class="title">Project details</h5>
+        	<div class="content">
+        		<dl class="dl-horizontal">
+        			<dt>ID:</dt>
+        			<dd>1</dd>
+        			<dt>DESC:</dt>
+        			<dd>Test Project</dd>
+        		</dl>
+        	</div>
+        </div>
+        <div class="sidebar-widget">
+            <h5 class="title">Action</h5>
+            <div class="content center">
+                <button id="btnnewproj" class="btn btn-reverse">
+                	<span class="icon16  icomoon-icon-copy blue"></span>
+          			New Project
+                </button>
+            </div>
+
+        </div><!-- End .sidenav-widget -->
+	</cc:implementation>>
+
+</ui:composition>

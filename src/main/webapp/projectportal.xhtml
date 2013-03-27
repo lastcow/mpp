@@ -1,0 +1,85 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.org/seam/faces"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+      <ui:composition template="WEB-INF/templates/sitetemplate_login.xhtml" >
+        <ui:define name="body">
+        <h:panelGroup layout="block" class="loginWrapper" rendered="#{identity.loggedIn}">
+        	<h:form>
+			    <div class="middleNav">
+			    	<ul>
+			        	<li class="iHome">
+				        	<h:commandLink action="dashboard" class="menuLeftMain">
+		                        <span>#{projStrings['menu_main']}</span>
+		                    </h:commandLink>
+		                </li>
+			            <li class="iProject">
+			            	<h:commandLink action="project" class="menuLeftProject">
+	                            <span>#{projStrings['menu_project']}</span>
+	                        </h:commandLink>
+	                    </li>
+			            <li class="iUser">
+			            	<h:commandLink action="resource" class="menuLeftResource">
+	                            <span>#{projStrings['menu_resource']}</span>
+	                        </h:commandLink>
+	                    </li>
+			            <li class="iSchedule">
+			            	<h:commandLink action="schedule" class="menuLeftSchedule">
+	                            <span>#{projStrings['menu_schedule']}</span>
+	                        </h:commandLink>
+	                    </li>
+			            <li class="iHelp">
+			            	<h:commandLink action="help" class="menuLeftHelp">
+	                            <span>#{projStrings['menu_help']}</span>
+	                        </h:commandLink>
+	                    </li>
+			        </ul>
+			    </div>
+		    </h:form>
+        </h:panelGroup>
+            <h:panelGroup layout="block" class="loginWrapper" rendered="#{not identity.loggedIn}">
+               <!--  <div class="loginLogo"><img src="resources/images/loginLogo.png" alt="" /></div> -->
+                <h:panelGroup layout="block" styleClass="list tipFailure" >
+	                <p><strong><h:messages globalOnly="true"/></strong></p>
+                </h:panelGroup>
+                <div class="loginPanel">
+                    <div class="head"><h5 class="iUser">Login</h5></div>
+                    <h:form action="" id="valid" class="mainForm">
+                        <fieldset>
+                            <div class="loginRow noborder">
+                                <label for="req1">Username:</label>
+                                <div class="loginInput">
+                                	<h:inputText id="username" value="#{credentials.username}" styleClass="#{component.valid?'':'invalid'}" autofocus="true" >
+                                		<f:validateRequired/>
+                                	</h:inputText>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            
+                            <div class="loginRow">
+                                <label for="req2">Password:</label>
+                                <div class="loginInput">
+                                	<h:inputSecret id="password" value="#{credentials.password}" styleClass="#{component.valid?'':'invalid'}"  >
+                                		<f:validateRequired/>
+                                	</h:inputSecret>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            
+                            <div class="loginRow">
+                                <!--<div class="rememberMe"><input type="checkbox" id="check2" name="chbox" /><label for="check2">Remember me</label></div>-->
+                                <h:commandLink action="#{identity.login}">
+                                    <button id="btnlogin" type="submit" class="greyishBtn submitForm">Log me in</button>
+                                </h:commandLink>
+                                <div class="fix"></div>
+                            </div>
+                        </fieldset>
+                    </h:form>
+                </div>
+            </h:panelGroup>
+        </ui:define>
+    </ui:composition>
+</html>

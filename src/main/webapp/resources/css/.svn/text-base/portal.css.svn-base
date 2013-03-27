@@ -1,0 +1,11 @@
+
+
+/* Dialog button panel */
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset{
+    float: right;
+}
+
+/* Holiday list table */
+.dateColumn {width:80px; text-align: center;}
+.nameColumn {}
+.functionColumn {width: 1%;}

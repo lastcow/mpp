@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.org/seam/faces"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<f:view>
+		<f:metadata>
+			<f:viewParam name="projectid" required="false" value="#{projectController.projectId}"></f:viewParam>
+			<s:viewAction action="#{projectController.loadProject}" />
+		</f:metadata>
+	</f:view>
+	<ui:composition template="../WEB-INF/templates/sitetemplate_main.xhtml"
+		xmlns:w="http://java.sun.com/jsf/composite/widgets">
+		<ui:define name="title">
+			#{projStrings['title_website']} - #{projStrings['title_project']}
+		</ui:define>
+		
+		<ui:define name="customCSS">
+			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/plugins/dhtmlxganttchart/dhtmlxgantt.css" />
+		</ui:define>
+
+		<ui:define name="customJS">
+			<script type="text/javascript" src="#{request.contextPath}/resources/plugins/tables/jquery.dataTables-ck.js"></script>
+			<script type="text/javascript" language="JavaScript" src="#{request.contextPath}/resources/plugins/dhtmlxganttchart/dhtmlxcommon.js"></script>
+			<script type="text/javascript" language="JavaScript" src="#{request.contextPath}/resources/plugins/dhtmlxganttchart/dhtmlxgantt.js"></script>
+			<script type="text/javascript" language="JavaScript" src="#{request.contextPath}/resources/plugins/ui/jquery.ui.datepicker-ja.js"></script>
+			<script type="text/javascript" src="#{request.contextPath}/resources/js/modules/project/project.js"></script>
+		</ui:define>
+
+		<ui:define name="body">
+			<div class="title"><h5>#{projStrings['menu_project']}</h5></div>
+						
+            <div class="body">
+	            <a href="javascript:void(0);" title="" class="btnIconLeft mr10 mt5" id="btnNewProject"><img src="#{request.contextPath}/resources/images/icons/color/application-plus.png" alt="" class="icon" /><span>New project</span></a>
+            </div>
+            
+	            <h:panelGroup layout="block" id="divProjectForm" style="display:none;" class="mainForm">
+	            <h:form id='projectForm' prependId='false'>
+                    <h:inputHidden value="#{projectController.project.projectId}"/>
+	            	<div style="display:none;" id="hiddenDiv">
+                        <h:outputLabel id="inputHiddenProjectCnt" value="#{glbProjectDtoList.size()}" />
+                    </div>
+	        		<fieldset>
+		                <div class="widget first mainForm">
+	                        <div class="rowElem">
+	                        	<h:outputLabel for='txtNewProjectName'>#{projStrings['form_project_name']}<span class="req">*</span></h:outputLabel>
+	                        	<div class="formRight" style="margin: 0;">
+	                        		<h:inputText id='txtNewProjectName' value='#{projectController.project.projectName}' style='width:280px !important;'
+	                        					styleClass='#{component.valid?"":"invalid"}'
+	                        					requiredMessage='#{validate["project.name.emptyMessage"]}'>
+	                        			<f:validateRequired />
+	                        		</h:inputText>
+	                        		<h:message for="txtNewProjectName" styleClass="errorMsg" />
+		                        </div>
+	                        	<div class="fix"></div>
+                            </div>
+	                        <div class="rowElem">
+	                        	<h:outputLabel for='txtNewProjectStartDate'>#{projStrings['form_project_startDate']}<span class="req">*</span></h:outputLabel>
+	                        	<div class="formRight" style="margin: 0;">
+	                        		<h:inputText id='txtNewProjectStartDate' value='#{projectController.project.startDate}'
+	                        					styleClass='#{component.valid?"":"invalid"}'
+                                                style="width:100px !important;"
+	                        					requiredMessage='#{validate["project.startDate.emptyMessage"]}'>
+		                        		<f:convertDateTime pattern="yyyy/MM/dd" />
+		                        		<f:validateRequired />
+	                        		</h:inputText>
+	                        		<h:message for="txtNewProjectStartDate" styleClass="errorMsg" />
+	                        	</div>
+	                        </div>
+	                        <div class="rowElem">
+                                <h:outputLabel value="#{projStrings['form_project_desc']}" for='txtProjectDesc' />
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputTextarea id="txtProjectDesc" rows="8"  classStyle="auto limit"  value='#{projectController.project.projectDesc}'
+                                                     style="width:280px !important;" />
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            <!--<s:validateForm validatorId="projectValidator" />-->
+                            <h:commandButton id="btnProjectDialogClose" value=""  action="#{projectController.reset}" style="display:none;" immediate="true">
+                                <!-- <f:ajax execute="@form" event="click"/> -->
+                                <f:ajax execute="" onevent="function(data) {resetDialogAfterClosed();}" render="@form"/>
+                            </h:commandButton>
+	                        <h:commandButton id="btnNewProjectSubmit"  value="Create Project" styleClass="greyishBtn submitForm" action="#{projectController.create}" style="display:none;">
+		                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {projectEventHandler(data);}" render="@form :tblProject "/>
+	                        </h:commandButton>
+                            <h:commandButton id="btnEditProjectSubmit"  value="Edit Project" styleClass="greyishBtn submitForm" action="#{projectController.update}" style="display:none;">
+                                <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {projectEventHandler(data);}" render="@form :tblProject "/>
+                            </h:commandButton>
+			                <div class="fix"></div>
+		                </div>
+		            </fieldset>
+		            </h:form>
+	            </h:panelGroup>
+            
+	            
+	            <div class="fix"></div>
+	            
+	            <!-- Display message (Success/Failure/Information) -->
+	            <w:messageBar />
+	            <div class="fix"/>
+	            
+	            <!-- Project list table -->
+				<div class="table">
+					<h:form prependId='false'>
+						<h:inputHidden id="inputHiddenProjectUpdatedCnt" value="#{glbProjectDtoList.size()}">
+                            <f:convertNumber />
+                        </h:inputHidden>
+						<h:inputHidden id="deleteProjectIdHidden" value="#{projectController.delProjectId}"/>
+						<h:commandButton id="btnDeleteProjectHidden" value="hidden delete project" action="#{projectController.delete}" style="display:none;">
+	        				<f:ajax execute="deleteProjectIdHidden" onevent="function(data) {deleteProjectEventHandler(data);}" render="inputHiddenProjectUpdatedCnt :tblProject "/>
+	        			</h:commandButton>
+					</h:form>
+		        	<div class="head"><h5 class="iFrames">#{projStrings['header_project_list']}</h5></div>
+		            <h:dataTable value='#{glbProjectDtoList}' var='projectDto' styleClass='display' id='tblProject'
+		            			rowClasses='gradeA, gradeA' 
+		            			columnClasses='projectTableName, projectTableStartDate, projectTableProgress, projectTableAction'
+		            			prependId='false'>
+		            	<h:column>
+		            		<f:facet name='header'>#{projStrings['table_project_name']}</f:facet>
+                            <h:form prependId="false">
+                                <h:commandLink action="#{projectController.setEditProject(projectDto.projectId)}">
+                                    <h:outputText value="#{projectDto.projectName}" />
+                                    <f:ajax execute="@form" onevent="function(data) {editProject(data);}" render=":projectForm" />
+                                </h:commandLink>
+                            </h:form>
+		            	</h:column>
+                        <h:column>
+                            <f:facet name="header">Start</f:facet>
+                            <h:outputText value="#{projectDto.startDate}">
+                                <f:convertDateTime pattern="yyyy#{projStrings['unit_year']}MM#{projStrings['unit_month']}dd#{projStrings['unit_day']}" />
+                            </h:outputText>
+                        </h:column>
+		            	<h:column>
+		            		<f:facet name='header'>#{projStrings['table_project_progress']}</f:facet>
+		            		<div id="#{projectDto.projectId}"></div><script>progressBarProcess('#{projectDto.projectId}', #{projectDto.projectStatus} );</script>
+		            	</h:column>
+		            	<h:column headerClass='aligncenter'>
+		            		<f:facet name='header'>#{projStrings['table_actions']}</f:facet>
+		            		<h:form prependId='false'>
+			            		<h:commandLink>
+				            		<img class="btnDeleteProject mr5" src="#{request.contextPath}/resources/images/icons/dark/trash.png" />
+			            			<f:ajax execute="@form" onevent="function(data) {confirmDelete(data, '#{projectDto.projectId}', '#{projectDto.projectName}');}" />
+			            		</h:commandLink>
+			            		<h:link outcome="projectdetail">
+		                        	<img class="" src="#{request.contextPath}/resources/images/icons/dark/arrowRight.png" />
+		                        	<f:param name="projectid" value="#{projectDto.projectId}" />
+		                        </h:link>
+		            		</h:form>
+		            	</h:column>
+		            </h:dataTable>
+		        </div>
+		</ui:define>
+	</ui:composition>
+</html>

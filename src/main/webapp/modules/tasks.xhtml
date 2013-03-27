@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:o="http://openfaces.org/"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<ui:composition template="../WEB-INF/templates/sitetemplate_main.xhtml"
+		xmlns:w="http://java.sun.com/jsf/composite/widgets">
+		<ui:define name="title">
+			Project @ Web - Tasks
+		</ui:define>
+
+		<ui:define name="customJS">
+
+            <script type="text/javascript" language="JavaScript" src="#{request.contextPath}/resources/plugins/ui/jquery.ui.datepicker-ja.js"></script>
+			<script type="text/javascript" language="javascript" src="#{request.contextPath}/resources/js/modules/project/tasks.js"></script>
+		</ui:define>
+
+		<ui:define name="body">
+			<div class="title"><h5>Tasks</h5></div>
+			
+			<!-- The project selector -->
+			<div class="body">
+				<h:form prependId="false">
+					<div class="mt10 mainForm">
+                        <h:outputLabel value="Project:" for="cmbTasksProject"/>
+						<h:selectOneMenu id="cmbTasksProject" converter="#{projectConverter}"
+                                            value="#{taskTreeTableBean.project}" >
+							<f:selectItem itemValue="#{null}" itemLabel="Please select project ..." />
+							<f:selectItems value="#{globalProjectList}" var="project" itemValue="#{project}" itemLabel="#{project.projectName}"/>
+						</h:selectOneMenu>
+                        <h:outputLabel value="Owner:" for="cmbTasksOwner" />
+                        <h:selectOneMenu id="cmbTasksOwner" converter="#{userConverter}"
+                                         value="#{taskTreeTableBean.user}"
+                                         title="Select user"   >
+                            <f:selectItem itemValue="#{null}" itemLabel="Please select owner ..." />
+                            <f:selectItems value="#{requestData.loadComboboxUsers}" />
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Status:" />
+                        <h:selectOneMenu id="cmbStatus" converter="#{statusConverter}"
+                                        value="#{taskTreeTableBean.status}">
+                            <f:selectItem itemValue="#{null}" itemLabel="Task status ..."/>
+                            <f:selectItems value="#{globalStatusList}" var="status" itemValue="#{status}" itemLabel="#{status.statusName}" />
+                        </h:selectOneMenu>
+					</div>
+                    <div class="fix"/>
+                    <div class="mt10 mainForm">
+                        <h:outputLabel value="Estimated Start Date: " for="cmdTaskEstimatedDateStart1"/>
+                        <h:inputText id="cmdTaskEstimatedDateStart1" value="#{taskTreeTableBean.searchPreference.estimatedStartDate1}" style="width: 100px;"><f:convertDateTime pattern="yyyy/MM/dd" /></h:inputText>&nbsp;~&nbsp;<h:inputText id="cmdTaskEstimatedDateStart2" value="#{taskTreeTableBean.searchPreference.estimatedStartDate2}" style="width: 100px;"><f:convertDateTime pattern="yyyy/MM/dd"/></h:inputText>
+                    </div>
+                    <div class="mt10 mainForm">
+                        <h:outputLabel value="Estimated End Date: " for="cmdTaskEstimatedDateEnd1"/>
+                        <h:inputText id="cmdTaskEstimatedDateEnd1" value="#{taskTreeTableBean.searchPreference.estimatedEndDate1}" style="width: 100px;"><f:convertDateTime pattern="yyyy/MM/dd" /></h:inputText>&nbsp;~&nbsp;<h:inputText id="cmdTaskEstimatedDateEnd2" value="#{taskTreeTableBean.searchPreference.estimatedEndDate2}" style="width: 100px;"><f:convertDateTime pattern="yyyy/MM/dd" /></h:inputText>
+                    </div>
+                    <div class="mt10 mainForm">
+                        <h:outputLabel value="Actual Start Date: " for="cmdTaskActualDateStart1"/>
+                        <h:inputText id="cmdTaskActualDateStart1" value="#{taskTreeTableBean.searchPreference.actualStartDate1}" style="width: 100px;"><f:convertDateTime pattern="yyyy/MM/dd" /></h:inputText>&nbsp;~&nbsp;<h:inputText id="cmdTaskActualDateStart2" value="#{taskTreeTableBean.searchPreference.actualStartDate2}" style="width: 100px;"> <f:convertDateTime pattern="yyyy/MM/dd" /></h:inputText>
+                    </div>
+                    <div class="mt10 mainForm">
+                        <h:outputLabel value="Actual End Date: " for="cmdTaskActualDateEnd1"/>
+                        <h:inputText id="cmdTaskActualDateEnd1" value="#{taskTreeTableBean.searchPreference.actualEndDate1}" style="width: 100px;"><f:convertDateTime pattern="yyyy/MM/dd" /></h:inputText>&nbsp;~&nbsp;<h:inputText id="cmdTaskActualDateEnd2" value="#{taskTreeTableBean.searchPreference.actualEndDate2}" style="width: 100px;"> <f:convertDateTime pattern="yyyy/MM/dd" /></h:inputText>
+                        <h:commandButton value="Get tasks" action="#{taskTreeTableBean.loadTasks}"  styleClass="greyishBtn submitForm">
+                            <f:ajax execute="@form" onerror="handleFormError" render=":taskTreeTableForm:taskTreeTable" />
+                        </h:commandButton>
+                    </div>
+
+				</h:form>
+				<div class="fix"/>
+				
+				<div class="widget">
+					<div class="head">
+						<h5 class="iBooks">Tasks list</h5>
+					</div>
+					<div class="body">
+                        <h:form id="taskTreeTableForm" prependId="false">
+                            <o:treeTable id="taskTreeTable" styleClass="tableReport" style="width:100%;"
+                                            var="task">
+                                <o:dynamicTreeStructure nodeChildren="#{taskTreeTableBean.nodeChildren}"
+                                                        nodeHasChildren="#{taskTreeTableBean.nodeHasChildren}"
+                                                        nodeKey="#{task.taskId}"
+                                                        />
+                                <o:columnResizing/>
+                                <o:columnReordering/>
+                                <f:facet name="noDataMessage">
+                                     <h:outputText value="No tasks found..." />
+                                </f:facet>
+                                <o:treeColumn header="Task Name" sortingExpression="#{task.taskName}" bodyStyle="text-align: left; padding-left:5px;" style="width: 20%;">
+                                    <h:outputText value="#{task.taskName}" styleClass="treeTableText"/>
+                                  </o:treeColumn>
+                                <o:column header="Project" sortingExpression="#{task.project.projectName}" bodyStyle="text-aligh:center; padding-left: 5px;" style="width : 8%;">
+                                    <h:link outcome="projectdetail">
+                                        <h:outputText value="#{task.project.projectName}" styleClass="treeTableText"/>
+                                        <f:param name="projectid" value="#{task.project.projectId}" />
+                                    </h:link>
+                                </o:column>
+                                <o:column header="Start Date" sortingExpression="#{task.taskEstimatedStartDate}" bodyStyle="text-align: center; padding-left:5px;" style="width: 10%;">
+                                    <h:outputText value="#{task.taskEstimatedStartDate}" styleClass="treeTableText">
+                                        <f:convertDateTime pattern="yyyy年MM月dd日" />
+                                    </h:outputText>
+                                  </o:column>
+                                <o:column header="Actual Start Date" sortingExpression="#{task.taskActualStartDate}" bodyStyle="text-align: center; padding-left:5px;" style="width: 10%;">
+                                    <h:outputText value="#{task.taskActualStartDate}" styleClass="treeTableText">
+                                        <f:convertDateTime pattern="yyyy年MM月dd日" />
+                                    </h:outputText>
+                                </o:column>
+                                <o:column header="End Date" sortingExpression="#{task.taskEstimatedEndDate}" bodyStyle="text-align: center; padding-left:5px;" style="width: 10%;">
+                                    <h:outputText value="#{task.taskEstimatedEndDate}" styleClass="treeTableText" >
+                                        <f:convertDateTime pattern="yyyy年MM月dd日" />
+                                    </h:outputText>
+                                  </o:column>
+                                <o:column header="Actual Start Date" sortingExpression="#{task.taskActualEndDate}" bodyStyle="text-align: center; padding-left:5px;" style="width: 10%;">
+                                    <h:outputText value="#{task.taskActualEndDate}" styleClass="treeTableText">
+                                        <f:convertDateTime pattern="yyyy年MM月dd日" />
+                                    </h:outputText>
+                                </o:column>
+                                <o:column header="Task length" sortingExpression="#{task.taskDurationHour}" bodyStyle="text-align: center; padding-left:5px;" style="width: 10%;">
+                                    <h:outputText value="#{task.taskDurationHour} Hours" styleClass="treeTableText" >
+                                    </h:outputText>
+                                  </o:column>
+                                <o:column header="Assigned to"  bodyStyle="text-align: left; padding-left:5px;" style="width: 20%;">
+                                    <ui:repeat value="#{task.userXtasks}" var="item" varStatus="status">
+                                        <h:outputText value="#{item.user.userName}" styleClass="treeTableText"/>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                  </o:column>
+                            </o:treeTable>
+                        </h:form>
+					</div>
+				</div>
+			</div>
+			
+		</ui:define>
+	</ui:composition>
+</html>

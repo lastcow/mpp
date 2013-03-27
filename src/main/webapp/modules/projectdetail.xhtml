@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:s="http://jboss.org/seam/faces"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<f:view>
+		<f:metadata>
+			<f:viewParam name="projectid" required="true" value="#{requestData.projectId}"></f:viewParam>
+			<f:viewParam name="projectid" required="true" value="#{projectController.projectId}"></f:viewParam>
+			<f:viewParam name="projectid" required="true" value="#{taskController.projectId}"></f:viewParam>
+<!-- 			<s:viewAction action="#{requestData.buildComboboxTasksByProject}" /> -->
+			<s:viewAction action="#{projectController.loadProject}" />
+			<s:viewAction action="#{taskController.loadSelfTasks}" />
+		</f:metadata>
+	</f:view>
+	<ui:composition template="../WEB-INF/templates/sitetemplate_main.xhtml"
+		xmlns:w="http://java.sun.com/jsf/composite/widgets">
+		<ui:define name="title">
+			#{projStrings['title_website']} - #{projStrings['title_project_tasks']} (#{projectController.project.projectName})
+		</ui:define>
+		
+		<ui:define name="customCSS">
+			<link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/plugins/dhtmlxganttchart/dhtmlxgantt.css" />
+
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/plugins/extjsganttchart/resources/css/sch-gantt-all.css" />
+            <!--Ext and ux styles -->
+            <!--<link href="http://cdn.sencha.io/ext-4.1.1-gpl/resources/css/ext-all.css" rel="stylesheet" type="text/css" />-->
+		</ui:define>
+
+		<ui:define name="customJS">
+			<script type="text/javascript" language="JavaScript" src="#{request.contextPath}/resources/plugins/dhtmlxganttchart/dhtmlxcommon.js"></script>
+			<script type="text/javascript" language="JavaScript" src="#{request.contextPath}/resources/plugins/dhtmlxganttchart/dhtmlxgantt-ck.js"></script>
+			<script type="text/javascript" language="JavaScript" src="#{request.contextPath}/resources/plugins/ui/jquery.ui.datepicker-ja.js"></script>
+            <!--Ext lib -->
+            <script src="http://cdn.sencha.io/ext-4.1.1-gpl/ext-all.js" type="text/javascript"></script>
+            <!--<script type="text/javascript" src="#{request.contextPath}/resources/plugins/extjsganttchart/gnt-all.js"></script>-->
+			<script type="text/javascript" src="#{request.contextPath}/resources/js/modules/project/projectdetail.js"></script>
+            <!--<script type="text/javascript" src="#{request.contextPath}/resources/js/modules/project/synopsys.js"></script>-->
+		</ui:define>
+
+		<ui:define name="body">
+			<script>
+				var projectId = "#{projectController.project.projectId}";
+			</script>
+			
+			<div class="title"><h5>#{projStrings['menu_project']} details - #{projectController.project.projectName}</h5></div>
+			
+			<div class="body">
+	            <a href="javascript:void(0);" title="" class="btnIconLeft mr10 mt5" id="btnNewTask"><img src="#{request.contextPath}/resources/images/icons/color/application-plus.png" alt="" class="icon" /><span>New task </span></a>
+            </div>
+
+            <h:panelGroup layout="block" id="divResourceForm" style="display: none;" styleClass="mainForm">
+                <h:form id="newResourceForm" prependId="false">
+                    <fieldset>
+
+                            <div class="rowElem">
+                                <h:outputLabel for='comboResource'>Resource:<span class="req">*</span></h:outputLabel>
+                                <div class="formRight">
+                                    <h:selectOneMenu id="comboResource" converter="#{userConverter}"
+                                                     value="#{requestData.resourceUserDTO.user}"
+                                                     requiredMessage="Resource required"
+                                                     styleClass='#{component.valid?"":"invalid"}'
+                                                     title="Select resource"   >
+                                        <f:selectItems value="#{requestData.loadComboboxUsers}" />
+                                        <f:validateRequired />
+                                    </h:selectOneMenu>
+                                    <h:message for="comboResource" styleClass="errorMsg"/>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+
+                            <div class="rowElem">
+                                <h:outputLabel for='txtUtiliz'>Utiliz (%):</h:outputLabel>
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputText id="txtUtiliz" value="#{requestData.resourceUserDTO.percentUtil}"
+                                                 styleClass='#{component.valid?"":"invalid"}'
+                                                 validatorMessage="Value must between 1 and 100"
+                                                 style="width: 100px !important;" maxlength="3">
+                                        <f:convertNumber maxIntegerDigits="3" />
+                                        <f:validateLongRange minimum="1" maximum="100" />
+                                    </h:inputText>&nbsp;%
+                                    <h:message for="txtUtiliz" styleClass="errorMsg" />
+                                </div>
+                            </div>
+
+                    </fieldset>
+                    <s:validateForm validatorId="resourceValidator" />
+                    <h:commandButton id="btnInsertResourceSubmit" action="#{requestData.insertResourceDto}" style="display: none;">
+                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {resourceEventHandler(data);}" render="@form :newTaskForm:resourceDiv :newTaskDialogForm"/>
+                    </h:commandButton>
+                    <h:commandButton id="btnResourceClose" style="display: none;">
+                        <f:ajax execute="" onerror="handleFormError"  onevent="function(data) {resetResourceDialogAfterClosed(data);}" render="@form :newTaskForm:resourceDiv"/>
+                    </h:commandButton>
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" id="divTaskDialogForm" style="display: none;" styleClass="mainForm">
+                <h:form id="newTaskDialogForm" prependId="false">
+                    <fieldset>
+
+                        <div class="rowElem">
+                            <h:outputLabel for='comboResource'>Task:<span class="req">*</span></h:outputLabel>
+                            <div class="formRight">
+                                <h:selectOneMenu id="comboNewTaskPred" value="#{requestData.preTask}"
+                                                 converter="#{taskConverter}"
+                                                 styleClass='#{component.valid?"":"invalid"}'
+                                        requiredMessage="Task required.">
+                                    <f:selectItems value="#{requestData.loadComboboxTasksByProject}"/>
+                                </h:selectOneMenu>
+                                <h:message for="comboNewTaskPred" styleClass="errorMsg"/>
+                            </div>
+                            <div class="fix"></div>
+                        </div>
+
+                    </fieldset>
+                    <h:commandButton id="btnInsertTaskSubmit" action="#{requestData.insertPreTask}" style="display: none;">
+                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {pretaskEventHandler(data);}" render="@form :newTaskForm:pretaskDiv"/>
+                    </h:commandButton>
+                    <h:commandButton id="btnTaskDialogFormClose" style="display: none;">
+                        <f:ajax execute="" onerror="handleFormError"  onevent="function(data) {resetPreTaskDialogAfterClosed(data);}" render="@form :newTaskForm:pretaskDiv"/>
+                    </h:commandButton>
+                </h:form>
+            </h:panelGroup>
+            
+        	<h:panelGroup layout="block" id="divTaskForm" style="display:none;" styleClass="mainForm">
+        		<h:form id='newTaskForm' prependId='false'>
+                    <h:inputHidden id="hiddenProjectId" value="#{projectController.projectId}" />
+	        		<fieldset>
+		                <div class="widget first mainForm">
+	                        <div class="rowElem">
+	                        	<h:outputLabel for='txtNewTaskName'>#{projStrings['form_projectdetail_TaskName']}<span class="req">*</span></h:outputLabel>
+	                        	<div class="formRight" style="margin: 0;">
+		                        	<h:inputText id='txtNewTaskName' value='#{taskController.newTask.taskName}'
+                                                 styleClass='#{component.valid?"":"invalid"}' style="width:280px !important;"
+	                        					requiredMessage='Name required'>
+			                        	<f:validateRequired />
+		                        	</h:inputText>
+		                        	<h:message for="txtNewTaskName" styleClass="errorMsg" />
+	                        	</div>
+	                        	<div class="fix"></div>
+                            </div>
+	                        <div class="rowElem">
+	                        	<h:outputLabel for='txtNewTaskStartDate'>#{projStrings['form_projectdetail_TaskEstimatedStarDate']}</h:outputLabel>
+	                        	<div class="formRight" style="margin: 0;">
+	                        		<h:inputText id='txtNewTaskStartDate' value='#{taskController.newTask.taskEstimatedStartDate}' styleClass='#{component.valid?"":"invalid"}'
+	                        					requiredMessage='#{validate["task.startDate.emptyMessage"]}' style="width:100px !important;">
+		                        		<f:convertDateTime pattern="yyyy/MM/dd" />
+	                        		</h:inputText>
+	                        		<h:message for="txtNewTaskStartDate" styleClass="errorMsg" />
+	                        	</div>
+                                <div class="fix"></div>
+	                        </div>
+	                        <div class="rowElem">
+	                        	<h:outputLabel for="txtNewTaskEndDate">End date</h:outputLabel>
+	                        	<div class="formRight" style="margin: 0;">
+	                        		<h:inputText id="txtNewTaskEndDate" styleClass='#{component.valid?"":"invalid"}'
+	                        					requiredMessage='#{validate["task.estimatedHour.emptyMessage"]}' style="width:100px !important;" value="#{taskController.newTask.taskEstimatedEndDate}">
+	                        			<f:convertDateTime pattern="yyyy/MM/dd" />
+	                        		</h:inputText>
+	                        		<h:message for="txtNewTaskEndDate" styleClass="errorMsg" />
+	                        	</div>
+                                <div class="fix"></div>
+	                        </div>
+                            <h:panelGroup layout="block" class="rowElem" id="resourceDiv">
+                                <h:outputLabel value="Resources:" />
+                                <div class="formRight">
+                                    <ui:repeat value="#{requestData.resourceUserDTOList}" var="resourceDto" varStatus="status">
+                                        <h:outputText value="#{resourceDto.user.userName}"/>(<h:outputText value="#{resourceDto.percentUtil}"><f:convertNumber type="percent"/> </h:outputText>)
+                                        <h:link onclick="removeResource('#{resourceDto.user.userId}'); return false;">
+                                            <img src="#{request.contextPath}/resources/images/icons/dark/denied.png"/>
+                                        </h:link>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                    <div style="float:right;">
+                                        <h:link id="linkOpenResrouceForm" >
+                                            <img src="#{request.contextPath}/resources/images/icons/color/chain.png" />
+                                        </h:link>
+                                    </div>
+                                </div>
+                                <div class="fix"></div>
+                            </h:panelGroup>
+                            <div class="rowElem">
+                                <h:outputLabel value="Parent task:" for="comboNewTaskParent" />
+                                <div class="formRight">
+                                    <h:selectOneMenu id="comboNewTaskParent" value="#{taskController.newTask.parentTask}" converter="#{taskConverter}">
+                                        <f:selectItem itemValue="0" itemLabel="#{projStrings['combox_selecttask']}" />
+                                        <f:selectItems value="#{requestData.loadComboboxTasksByProject}" />
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            <h:panelGroup id="pretaskDiv" layout="block" class="rowElem">
+                                <h:outputLabel value="Pre-tasks:"/>
+                                <div class="formRight">
+                                    <ui:repeat value="#{requestData.preTaskList}" var="task" varStatus="status">
+                                        <h:outputText value="#{task.taskName}"/>
+                                        <h:link onclick="removeTask('#{task.taskId}'); return false;">
+                                            <img src="#{request.contextPath}/resources/images/icons/dark/denied.png"/>
+                                        </h:link>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                    <div style="float:right;">
+                                        <h:link id="linkOpenPreTaskForm" >
+                                            <img src="#{request.contextPath}/resources/images/icons/color/chain.png" />
+                                        </h:link>
+                                    </div>
+                                </div>
+                                <div class="fix"></div>
+                            </h:panelGroup>
+	                        <!--<div class="rowElem">-->
+	                        	<!--<h:outputLabel value="Pre-task:" for="comboNewTaskPred" />-->
+	                        	<!--<div class="formRight">-->
+	                        		<!--<h:selectOneMenu id="comboNewTaskPred" value="#{taskController.newTask.preTask}" converter="#{taskConverter}">-->
+	                        		<!--<f:selectItem itemValue="0" itemLabel="#{projStrings['combox_selecttask']}" />-->
+	                        			<!--<f:selectItems value="#{requestData.loadComboboxTasksByProject}"/>-->
+	                        		<!--</h:selectOneMenu>-->
+	                        	<!--</div>-->
+                                <!--<div class="fix"></div>-->
+	                        <!--</div>-->
+	
+	                        <div class="rowElem">
+                                <h:outputLabel value="Description:" for='taNewTaskDesc' />
+                                <div class="formRight">
+                                    <h:inputTextarea rows="8" cols="3" classStyle="auto limit" id="taNewTaskDesc" value='#{taskController.newTask.taskDesc}' style="width:280px !important;"/>
+                                </div>
+                                <div class="fix"></div>
+	                        </div>
+                            <h:inputHidden id="selectedResource" value="#{requestData.selectedUserId}"/>
+                            <h:inputHidden id="selectedPreTask" value="#{requestData.selectedTaskId}"/>
+                            <h:commandButton id="btnTaskDialogClose" action="#{taskController.closeAndReset}" style="display:none;">
+                                <f:ajax execute=""  action="" onerror="handleFormError" onevent="function(data) {resetTaskDialogAfterClose(data);}" render="@form" />
+                            </h:commandButton>
+                            <h:commandButton id="btnRemoveResourceSubmit" action="#{requestData.removeResourceDto}" style="display:none;">
+                                <f:ajax execute="selectedResource" onerror="handleFormError" onevent="function(data) {crudResourceEventHandler(data);}" render="resourceDiv" />
+                            </h:commandButton>
+                            <h:commandButton id="btnRemovePreTaskSubmit" action="#{requestData.removePreTask}" style="display:none;">
+                                <f:ajax execute="selectedPreTask" oneerror="handleFormError" onevent="function(data) {crudResourceEventHandler(data);}" render="pretaskDiv" />
+                            </h:commandButton>
+	                        <h:commandButton id="btnNewTaskSubmit" action="#{taskController.creat}" value="Create Task" styleClass="greyishBtn submitForm :divTaskDialogForm" style="display:none;">
+	                        	<!-- Ajax implementation -->
+	                        	<f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {crudTaskEventHandler(data);}" render="@form :GanttDiv"/>
+	                        </h:commandButton>
+
+	                        <s:validateForm validatorId="taskValidator"/>
+			                <div class="fix"></div>
+		                </div>
+		            </fieldset>
+	            </h:form>
+        	</h:panelGroup>
+
+            <h:panelGroup id="divEditTaskForm" layout="block" style="display:none;" styleClass="mainForm">
+                <h:form id="editTaskForm" prependId="false">
+                    <h:inputHidden id="editTaskId" value='#{taskController.editTask.taskId}' />
+                    <fieldset>
+                        <div class="widget first mainForm">
+                            <div class="rowElem">
+                                <h:outputLabel for='txtEditTaskName'>#{projStrings['form_projectdetail_TaskName']}<span class="req">*</span></h:outputLabel>
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputText id='txtEditTaskName' value='#{taskController.editTask.taskName}'
+                                                 styleClass='#{component.valid?"":"invalid"}' style="width:280px !important;"
+                                                 requiredMessage='Name required'>
+                                        <f:validateRequired />
+                                    </h:inputText>
+                                    <h:message for="txtEditTaskName" styleClass="errorMsg" />
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            <div class="rowElem">
+                                <h:outputLabel>Progress:</h:outputLabel>
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputText id='txtEditTaskPercentage' value='#{taskController.editTask.taskPercentComplete}' style="width: 100px !important;"></h:inputText> %
+                                </div>
+                            </div>
+                            <div class="rowElem">
+                                <h:outputLabel for='txtEditTaskStartDate'>#{projStrings['form_projectdetail_TaskEstimatedStarDate']}</h:outputLabel>
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputText id='txtEditTaskStartDate' value='#{taskController.editTask.taskEstimatedStartDate}' styleClass='#{component.valid?"":"invalid"}'
+                                                 requiredMessage='#{validate["task.startDate.emptyMessage"]}' style="width:100px !important;">
+                                        <f:convertDateTime pattern="yyyy/MM/dd" />
+                                    </h:inputText>
+                                    <h:message for="txtEditTaskStartDate" styleClass="errorMsg" />
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            <div class="rowElem">
+                                <h:outputLabel for='txtEditTaskActualStartDate'>Actual Start Date:</h:outputLabel>
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputText id='txtEditTaskActualStartDate' value='#{taskController.editTask.taskActualStartDate}' styleClass='#{component.valid?"":"invalid"}'
+                                                 requiredMessage='#{validate["task.startDate.emptyMessage"]}' style="width:100px !important;">
+                                        <f:convertDateTime pattern="yyyy/MM/dd" />
+                                    </h:inputText>
+                                    <h:message for="txtEditTaskActualStartDate" styleClass="errorMsg" />
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            <div class="rowElem">
+                                <h:outputLabel for="txtEditTaskEndDate">End date</h:outputLabel>
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputText id="txtEditTaskEndDate" styleClass='#{component.valid?"":"invalid"}'
+                                                 requiredMessage='#{validate["task.estimatedHour.emptyMessage"]}' style="width:100px !important;" value="#{taskController.editTask.taskEstimatedEndDate}">
+                                        <f:convertDateTime pattern="yyyy/MM/dd" />
+                                    </h:inputText>
+                                    <h:message for="txtEditTaskEndDate" styleClass="errorMsg" />
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+                            <div class="rowElem">
+                                <h:outputLabel for="txtEditTaskActualEndDate">Actual End date</h:outputLabel>
+                                <div class="formRight" style="margin: 0;">
+                                    <h:inputText id="txtEditTaskActualEndDate" styleClass='#{component.valid?"":"invalid"}'
+                                                 requiredMessage='#{validate["task.estimatedHour.emptyMessage"]}' style="width:100px !important;" value="#{taskController.editTask.taskActualEndDate}">
+                                        <f:convertDateTime pattern="yyyy/MM/dd" />
+                                    </h:inputText>
+                                    <h:message for="txtEditTaskActualEndDate" styleClass="errorMsg" />
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+
+                            <div class="rowElem">
+                                <h:outputLabel value="Description:" for='taEditTaskDesc' />
+                                <div class="formRight">
+                                    <h:inputTextarea rows="8" cols="3" classStyle="auto limit" id="taEditTaskDesc" value='#{taskController.editTask.taskDesc}' style="width:280px !important;"/>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
+
+                            <div class="fix"></div>
+                        </div>
+                    </fieldset>
+                    <h:commandButton id="btnEditTaskSubmitId" action="#{taskController.loadTask}" style="display:none;">
+                        <f:ajax execute="editTaskId" onerror="handleFormError" onevent="function(data) {loadTaskEventHandler(data);}" render="@form :GanttDiv" />
+                    </h:commandButton>
+                    <h:commandButton id="btnEditTaskSubmit" action="#{taskController.update}" style="display:none;">
+                        <f:ajax execute="@form" onerror="handleFormError" onevent="function(data) {editTaskEventHandler(data);}" render="@form :GanttDiv" />
+                    </h:commandButton>
+                </h:form>
+            </h:panelGroup>
+            <div class="fix"></div>
+            
+            <!-- Display message (Success/Failure/Information) -->
+            <w:messageBar />
+            <div class="fix"/>
+			
+			<!--<w:taskslist tasks="#{requestTaskList}" />-->
+			
+			<div class="widget">
+				<div class="head"><h5 class="iBooks" id='wbstype'></h5></div>
+                <div class="body">
+                    <a href="javascript:void(0);" title="" class="btnIconLeft mr10 mt5" id="btnTriggleBaseline"><img src="#{request.contextPath}/resources/images/icons/color/category.png" alt="" class="icon" /><span>Baseline</span></a>
+                    <a href="javascript:void(0);" title="" class="btnIconLeft mr10 mt5" id="btnTriggleActual"><img src="#{request.contextPath}/resources/images/icons/color/edit-column.png" alt="" class="icon" /><span>Actual</span></a>
+                    <h:panelGroup layout="block" style="width:99%; line-height:12px; height:610px; display:block;" id="GanttDiv" />
+                    <!--<h:panelGroup layout="block" style="padding-right: 3px; display:block;" id="ExtjsGantt"/>-->
+                </div>
+			</div>
+            
+		</ui:define>
+	</ui:composition>
+</html>

@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/project/!svn/ver/12676/mind/MPP/src/main/java/com/projectportal/entity
+END
+UserXTaskPK.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/project/!svn/ver/14265/mind/MPP/src/main/java/com/projectportal/entity/UserXTaskPK.java
+END
+Preference.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/project/!svn/ver/15695/mind/MPP/src/main/java/com/projectportal/entity/Preference.java
+END
+User.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/project/!svn/ver/14842/mind/MPP/src/main/java/com/projectportal/entity/User.java
+END
+Project.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/project/!svn/ver/12676/mind/MPP/src/main/java/com/projectportal/entity/Project.java
+END
+RoleGroup.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/project/!svn/ver/12658/mind/MPP/src/main/java/com/projectportal/entity/RoleGroup.java
+END
+Holiday.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/project/!svn/ver/15410/mind/MPP/src/main/java/com/projectportal/entity/Holiday.java
+END
+Role.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/project/!svn/ver/12658/mind/MPP/src/main/java/com/projectportal/entity/Role.java
+END
+Task.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/project/!svn/ver/15695/mind/MPP/src/main/java/com/projectportal/entity/Task.java
+END
+Priority.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/project/!svn/ver/12658/mind/MPP/src/main/java/com/projectportal/entity/Priority.java
+END
+Department.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/project/!svn/ver/14842/mind/MPP/src/main/java/com/projectportal/entity/Department.java
+END
+Status.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/project/!svn/ver/12658/mind/MPP/src/main/java/com/projectportal/entity/Status.java
+END
+UserXTask.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/project/!svn/ver/12658/mind/MPP/src/main/java/com/projectportal/entity/UserXTask.java
+END
