@@ -45,7 +45,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `mppdb`.`Department` ;
 
 CREATE  TABLE IF NOT EXISTS `mppdb`.`Department` (
-  `departmentId` VARCHAR(32) NOT NULL ,
+  `departmentId` VARCHAR(36) NOT NULL ,
   `departmentName` VARCHAR(200) NOT NULL ,
   `departmentDesc` VARCHAR(1000) NULL ,
   PRIMARY KEY (`departmentId`) )
@@ -65,7 +65,7 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`User` (
   `email` VARCHAR(250) NOT NULL ,
   `groupId` VARCHAR(36) NULL ,
   `roleId` VARCHAR(36) NULL ,
-  `departmentId` VARCHAR(32) NOT NULL ,
+  `departmentId` VARCHAR(36) NULL ,
   PRIMARY KEY (`userId`) ,
   INDEX `fk_User_Group1` (`groupId` ASC) ,
   INDEX `fk_User_Role1` (`roleId` ASC) ,
