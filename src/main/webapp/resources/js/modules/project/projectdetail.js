@@ -207,7 +207,7 @@ function onTaskClick(task){
 
     rememberTaskScrollPosition();
     // Assign id to hidden field
-    $('#editTaskId').val(task.getId());
+    $('#editTaskId').val(task.getId())
     $('#btnEditTaskSubmitId').click();
 }
 
@@ -325,9 +325,7 @@ function loadTaskEventHandler(data){
         // Loading...
     }else if(data.status = "success"){
         // Reload edit task form and open dialog
-        // Setup progress
-//        progressBarProcess('pbar', $('#txtEditTaskPercentage').val()+'%');
-        initComponent();
+        initEditTaskForm();
         $('#divEditTaskForm').dialog('open');
     }else if(data.status == "complete"){
         // Complete
@@ -417,6 +415,15 @@ function initTaskForm(){
 }
 
 /**
+ * Init task edit form
+ */
+function initEditTaskForm(){
+    $('#txtEditTaskStartDate').datepicker();
+    $('#txtEditTaskActualStartDate').datepicker();
+    $('#txtEditTaskEndDate').datepicker();
+}
+
+/**
  * Reset resource form after close.
  * @param data
  */
@@ -458,6 +465,7 @@ function resetTaskDialogAfterClose(data){
         if($('#taNewTaskDesc').hasClass('invalid')) $('#taNewTaskDesc').removeClass('invalid');
         // Init form
         initTaskForm();
+        setTaskScrollPosition();
     }
 }
 
@@ -468,8 +476,6 @@ function resetTaskDialogAfterClose(data){
 function resetEditTaskDialogAfterClose(data){
     if(data.status == 'success'){
         // Init task form and clean everything.
-        uniformElement('taskform');
-        uniformElement('newTaskDialogForm');
         // Remove error class
         if($('#txtEditTaskName').hasClass('invalid')) $('#txtEditTaskName').removeClass('invalid');
         if($('#txtEditTaskPercentage').hasClass('invalid')) $('#txtEditTaskPercentage').removeClass('invalid');
@@ -477,8 +483,8 @@ function resetEditTaskDialogAfterClose(data){
         if($('#txtEditTaskActualStartDate').hasClass('invalid')) $('#txtEditTaskActualStartDate').removeClass('invalid');
         if($('#txtEditTaskEndDate').hasClass('invalid')) $('#txtEditTaskEndDate').removeClass('invalid');
         if($('#txtEditTaskActualEndDate').hasClass('invalid')) $('#txtEditTaskActualEndDate').removeClass('invalid');
-        // Init form
-        initTaskForm();
+
+        setTaskScrollPosition();
     }
 }
 

@@ -364,7 +364,7 @@
                         <f:ajax execute=""  action="" onerror="handleFormError" onevent="function(data) {resetEditTaskDialogAfterClose(data);}" render="@form" />
                     </h:commandButton>
                     <h:commandButton id="btnEditTaskSubmitId" action="#{taskController.loadTask}" style="display:none;">
-                        <f:ajax execute="editTaskId" onerror="handleFormError" onevent="function(data) {loadTaskEventHandler(data);}" render="@form :GanttDiv" />
+                        <f:ajax execute="editTaskId" onerror="handleFormError" onevent="function(data) {loadTaskEventHandler(data);}" render="@form" />
                     </h:commandButton>
                     <h:commandButton id="btnEditTaskSubmit" action="#{taskController.update}" style="display:none;">
                         <f:ajax execute="@form" onerror="handleFormError" onevent="function(data) {editTaskEventHandler(data);}" render="@form :GanttDiv" />
