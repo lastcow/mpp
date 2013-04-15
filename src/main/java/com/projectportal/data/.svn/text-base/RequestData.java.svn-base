@@ -38,6 +38,8 @@ public @ViewScoped class RequestData extends AbstractProducer implements Seriali
     private List<ResoruceUserDTO> resourceUserDTOList;
     // Pre task list
     private List<Task> preTaskList;
+    // Pre task list for edit
+    private List<Task> preTaskEditList;
 
     // User id selected
     private String selectedUserId;
@@ -173,6 +175,17 @@ public @ViewScoped class RequestData extends AbstractProducer implements Seriali
         }
     }
 
+    /**
+     * Remove pretask from list
+     */
+    public void removePreEditTask(){
+        if(preTaskEditList != null && preTaskEditList.size()>0 && selectedTaskId != null){
+            Task task = em.find(Task.class, selectedTaskId);
+            preTaskEditList.remove(task);
+
+        }
+    }
+
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
@@ -227,5 +240,13 @@ public @ViewScoped class RequestData extends AbstractProducer implements Seriali
 
     public void setPreTask(Task preTask) {
         this.preTask = preTask;
+    }
+
+    public List<Task> getPreTaskEditList() {
+        return preTaskEditList;
+    }
+
+    public void setPreTaskEditList(List<Task> preTaskEditList) {
+        this.preTaskEditList = preTaskEditList;
     }
 }

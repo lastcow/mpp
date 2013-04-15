@@ -31,11 +31,12 @@ public class ProjectController implements Serializable {
 	private static final long serialVersionUID = 3572096930093985831L;
 	
 	@Inject private EntityManager em;
-//	@Inject private Logger log;
+//	@Inject private Logger logger;
 	@Inject @Category("Project Controller") Logger log;
 	//@Inject private FacesContext facesContext;
 	@Inject private Event<Project> projectEventSrc;
 	@Inject Identity identity;
+    @Inject Logger logger;
 	
 	
 	private String projectId;
@@ -95,6 +96,7 @@ public class ProjectController implements Serializable {
      * Reset project instance.
      */
     public void reset(){
+        logger.info("Reset project controller");
         project = new Project();
     }
 
@@ -107,14 +109,22 @@ public class ProjectController implements Serializable {
             this.project = em.find(Project.class, projectId);
         }
     }
+
+    public void newProject(){
+        logger.info("Creating project : " + project.toString());
+    }
 	
 	/**
 	 * Create new project.
 	 * @throws Exception
 	 */
-	@Admin
-	public void create() throws Exception{
+//	@Admin
+	public void doCreate() {
 
+        logger.info("Creating project : " + project.toString());
+        if(project == null){
+            return ;
+        }
 		project.setProjectId(UUID.randomUUID().toString());
 		// Set owner.
 		project.setUser(em.find(User.class, identity.getUser().getId()));

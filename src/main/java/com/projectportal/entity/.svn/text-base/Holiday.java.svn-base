@@ -35,7 +35,7 @@ public class Holiday implements Serializable {
     @Column(nullable=true, length=250)
     private Date endDate;
 
-    @Column(nullable = true, length = 400)
+    @Column(name="holidayDesc", nullable = true, length = 400)
     private String desc;
 
     @Column(nullable = false, length = 1)
@@ -88,5 +88,17 @@ public class Holiday implements Serializable {
 
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
+    }
+
+    @Override
+    public String toString() {
+        return "Holiday{" +
+                "holidayId='" + holidayId + '\'' +
+                ", holidayName='" + holidayName + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", desc='" + desc + '\'' +
+                ", fixed=" + fixed +
+                '}';
     }
 }

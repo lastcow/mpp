@@ -28,7 +28,7 @@ public class TaskValidator extends AbstractValidator implements Validator {
 
     @Inject EntityManager em;
     @Inject Identity identity;
-    @Inject Logger log;
+    @Inject Logger logger;
 
     @Inject RequestData requestData;
     @Inject InputElement<String> hiddenProjectId;
@@ -42,13 +42,31 @@ public class TaskValidator extends AbstractValidator implements Validator {
     @Override
     public void validate(FacesContext facesContext, UIComponent uiComponent, Object o) throws ValidatorException {
 
+        for(Task preTask : requestData.getPreTaskList()){
+            System.out.println("Pre task: " + preTask.getTaskName());
+        }
+
         // Start Date can't earyly than project start date.
         if(txtNewTaskStartDate.getValue() != null ){
             // Get project
             Project project = em.find(Project.class, hiddenProjectId.getValue());
+            logger.info("Project information reterieved: " + project.toString());
             if(txtNewTaskStartDate.getValue().compareTo(project.getStartDate()) <0 ){
                 // Error.
                 doError(txtNewTaskStartDate, "Invalid task start/end dates !", "Task start date must be after project start date");
+            }
+
+            // Check for the pretask.
+            if(requestData.getPreTaskList() != null && requestData.getPreTaskList().size() > 0){
+                // TODO always get first one now. (due to component limitation)
+                Task preTask = requestData.getPreTaskList().get(0);
+                if(preTask  != null ){
+                    // Check for the date.
+                    if (! (txtNewTaskStartDate.getValue().compareTo(preTask.getTaskEstimatedEndDate()) > 0)){
+                        // Error.
+                        doError(txtNewTaskStartDate, "Invalid task start/end dates !", "Task start date must be after pre-task end date");
+                    }
+                }
             }
         }
 

@@ -37,11 +37,15 @@
             </div>
             
 	            <h:panelGroup layout="block" id="divProjectForm" style="display:none;" class="mainForm">
-	            <h:form id='projectForm' prependId='false'>
+                <h:form id="datatableCntForm" prependId="false">
                     <h:inputHidden value="#{projectController.project.projectId}"/>
-	            	<div style="display:none;" id="hiddenDiv">
-                        <h:outputLabel id="inputHiddenProjectCnt" value="#{glbProjectDtoList.size()}" />
+                    <div style="display:none;" id="hiddenDiv">
+                        <h:inputHidden id="inputHiddenProjectCnt" value="#{glbProjectDtoList.size()}" >
+                            <f:convertNumber />
+                        </h:inputHidden>
                     </div>
+                </h:form>
+	            <h:form id='projectForm' prependId='false'>
 	        		<fieldset>
 		                <div class="widget first mainForm">
 	                        <div class="rowElem">
@@ -82,8 +86,8 @@
                                 <!-- <f:ajax execute="@form" event="click"/> -->
                                 <f:ajax execute="" onevent="function(data) {resetDialogAfterClosed();}" render="@form"/>
                             </h:commandButton>
-	                        <h:commandButton id="btnNewProjectSubmit"  value="Create Project" styleClass="greyishBtn submitForm" action="#{projectController.create}" style="display:none;">
-		                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {projectEventHandler(data);}" render="@form :tblProject "/>
+	                        <h:commandButton id="btnNewProjectSubmit"  value=""  action="#{projectController.doCreate}" style="display:none;">
+		                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {projectEventHandler(data);}" render="@form :tblProject :datatableCntForm"/>
 	                        </h:commandButton>
                             <h:commandButton id="btnEditProjectSubmit"  value="Edit Project" styleClass="greyishBtn submitForm" action="#{projectController.update}" style="display:none;">
                                 <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {projectEventHandler(data);}" render="@form :tblProject "/>
@@ -120,10 +124,10 @@
 		            	<h:column>
 		            		<f:facet name='header'>#{projStrings['table_project_name']}</f:facet>
                             <h:form prependId="false">
-                                <h:commandLink action="#{projectController.setEditProject(projectDto.projectId)}">
+                                <h:link outcome="projectdetail">
                                     <h:outputText value="#{projectDto.projectName}" />
-                                    <f:ajax execute="@form" onevent="function(data) {editProject(data);}" render=":projectForm" />
-                                </h:commandLink>
+                                    <f:param name="projectid" value="#{projectDto.projectId}" />
+                                </h:link>
                             </h:form>
 		            	</h:column>
                         <h:column>
@@ -143,10 +147,10 @@
 				            		<img class="btnDeleteProject mr5" src="#{request.contextPath}/resources/images/icons/dark/trash.png" />
 			            			<f:ajax execute="@form" onevent="function(data) {confirmDelete(data, '#{projectDto.projectId}', '#{projectDto.projectName}');}" />
 			            		</h:commandLink>
-			            		<h:link outcome="projectdetail">
-		                        	<img class="" src="#{request.contextPath}/resources/images/icons/dark/arrowRight.png" />
-		                        	<f:param name="projectid" value="#{projectDto.projectId}" />
-		                        </h:link>
+                                <h:commandLink action="#{projectController.setEditProject(projectDto.projectId)}">
+                                    <img class="" src="#{request.contextPath}/resources/images/icons/dark/arrowRight.png" />
+                                    <f:ajax execute="@form" onevent="function(data) {editProject(data);}" render=":projectForm" />
+                                </h:commandLink>
 		            		</h:form>
 		            	</h:column>
 		            </h:dataTable>

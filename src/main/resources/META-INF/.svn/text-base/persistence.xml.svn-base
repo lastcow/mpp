@@ -7,11 +7,17 @@
    <persistence-unit name="primary">
       <!-- If you are running in a production environment, add a managed 
          data source, the example data source is just for development and testing! -->
-      <jta-data-source>java:jboss/datasources/MPPDS</jta-data-source>
-      <properties>
-         <!-- Properties for Hibernate -->
-         <property name="hibernate.hbm2ddl.auto" value="create-drop" />
-         <property name="hibernate.show_sql" value="false" />
-      </properties>
+      <!--<jta-data-source>java:jboss/datasources/MPPDS</jta-data-source>-->
+      <!--<properties>-->
+         <!--&lt;!&ndash; Properties for Hibernate &ndash;&gt;-->
+         <!--<property name="hibernate.hbm2ddl.auto" value="create-drop" />-->
+         <!--<property name="hibernate.show_sql" value="false" />-->
+      <!--</properties>-->
+
+       <jta-data-source>java:jboss/datasources/ProjectDS</jta-data-source>
+       <properties>
+           <property name="hibernate.show_sql" value="false" />
+       </properties>
+
    </persistence-unit>
 </persistence>

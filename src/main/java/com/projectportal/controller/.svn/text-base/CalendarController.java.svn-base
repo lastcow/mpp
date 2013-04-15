@@ -51,6 +51,7 @@ public class CalendarController implements Serializable {
     @Admin
     public void create(){
 
+        logger.info("Creating holiday: " + newHoliday.toString());
         newHoliday.setHolidayId(UUID.randomUUID().toString());
         em.persist(newHoliday);
         postInit();

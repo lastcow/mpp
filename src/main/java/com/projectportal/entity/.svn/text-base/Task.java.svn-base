@@ -34,7 +34,7 @@ public class Task implements Serializable {
 	@Column(nullable=false)
 	private Date taskEstimatedEndDate;
 
-	@Temporal(TemporalType.TIMESTAMP)
+
 	@Column(nullable=false)
 	private Date taskEstimatedStartDate;
 
@@ -74,7 +74,7 @@ public class Task implements Serializable {
     private Task preTask;
 
     //bi-directional many-to-one association to Task
-    @OneToMany(mappedBy="preTask")
+    @OneToMany(mappedBy="preTask", cascade = CascadeType.REMOVE)
     private List<Task> dependentTasks;
 
 	//bi-directional many-to-one association to UserXTask
@@ -251,4 +251,19 @@ public class Task implements Serializable {
 		this.userXtasks = userXtasks;
 	}
 
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskId='" + taskId + '\'' +
+                ", taskActualEndDate=" + taskActualEndDate +
+                ", taskActualStartDate=" + taskActualStartDate +
+                ", taskDesc='" + taskDesc + '\'' +
+                ", taskDurationHour=" + taskDurationHour +
+                ", taskEstimatedEndDate=" + taskEstimatedEndDate +
+                ", taskEstimatedStartDate=" + taskEstimatedStartDate +
+                ", taskName='" + taskName + '\'' +
+                ", taskPercentComplete=" + taskPercentComplete +
+                ", priority=" + priority +
+                '}';
+    }
 }

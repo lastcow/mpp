@@ -21,7 +21,7 @@ function initComponent(){
 	activeLeftMenuItem('menuLeftProject');
 */
 		// Remove tr if no data existing. It's jsf datatable natual
-	if($('#inputHiddenProjectCnt').text() == '0'){
+	if($('#inputHiddenProjectCnt').val() == '0'){
 		$('#tblProject tbody tr').remove();
 	}
 	
@@ -114,7 +114,7 @@ function projectEventHandler(data){
         }
 
 		// Remove tr if no data existing. It's jsf datatable natual
-		if($('#inputHiddenProjectCnt').text() == '0'){
+		if($('#inputHiddenProjectCnt').val() == '0'){
 			$('#tblProject tbody tr').remove();
 		}
 		

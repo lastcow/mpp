@@ -51,6 +51,14 @@
 	            <a href="javascript:void(0);" title="" class="btnIconLeft mr10 mt5" id="btnNewTask"><img src="#{request.contextPath}/resources/images/icons/color/application-plus.png" alt="" class="icon" /><span>New task </span></a>
             </div>
 
+            <div style="display: none;">
+                <h:form id="functionForm" prependId="false">
+                    <h:commandButton id="btnResetTaskPanelPosition" action="#{taskController.fakeAction}" >
+                        <f:ajax execute="" onevent="function (data) {setTaskScrollPosition();}" />
+                    </h:commandButton>
+                </h:form>
+            </div>
+
             <h:panelGroup layout="block" id="divResourceForm" style="display: none;" styleClass="mainForm">
                 <h:form id="newResourceForm" prependId="false">
                     <fieldset>
@@ -236,7 +244,7 @@
                                 <f:ajax execute="selectedResource" onerror="handleFormError" onevent="function(data) {crudResourceEventHandler(data);}" render="resourceDiv" />
                             </h:commandButton>
                             <h:commandButton id="btnRemovePreTaskSubmit" action="#{requestData.removePreTask}" style="display:none;">
-                                <f:ajax execute="selectedPreTask" oneerror="handleFormError" onevent="function(data) {crudResourceEventHandler(data);}" render="pretaskDiv" />
+                                <f:ajax execute="selectedPreTask" onerror="handleFormError" onevent="function(data) {crudResourceEventHandler(data);}" render="pretaskDiv" />
                             </h:commandButton>
 	                        <h:commandButton id="btnNewTaskSubmit" action="#{taskController.creat}" value="Create Task" styleClass="greyishBtn submitForm :divTaskDialogForm" style="display:none;">
 	                        	<!-- Ajax implementation -->
@@ -270,7 +278,7 @@
                             <div class="rowElem">
                                 <h:outputLabel>Progress:</h:outputLabel>
                                 <div class="formRight" style="margin: 0;">
-                                    <h:inputText id='txtEditTaskPercentage' value='#{taskController.editTask.taskPercentComplete}' style="width: 100px !important;"></h:inputText> %
+                                    <h:inputText id='txtEditTaskPercentage' value='#{taskController.editTask.taskPercentComplete}' style="width: 100px !important;"><f:convertNumber/></h:inputText> %
                                 </div>
                             </div>
                             <div class="rowElem">
@@ -318,6 +326,25 @@
                                 <div class="fix"></div>
                             </div>
 
+                            <!--<h:panelGroup id="pretaskEditDiv" layout="block" class="rowElem">-->
+                                <!--<h:outputLabel value="Pre-tasks:"/>-->
+                                <!--<div class="formRight">-->
+                                    <!--<ui:repeat value="#{requestData.preTaskEditList}" var="task" varStatus="status">-->
+                                        <!--<h:outputText value="#{taskController.editTask.taskName}"/>-->
+                                        <!--<h:link onclick="removePreTask('#{taskController.editTask.taskId}'); return false;">-->
+                                            <!--<img src="#{request.contextPath}/resources/images/icons/dark/denied.png"/>-->
+                                        <!--</h:link>-->
+                                        <!--<h:outputText value=", " rendered="#{not status.last}"/>-->
+                                    <!--</ui:repeat>-->
+                                    <!--<div style="float:right;">-->
+                                        <!--<h:link id="linkOpenPreEditTaskForm" >-->
+                                            <!--<img src="#{request.contextPath}/resources/images/icons/color/chain.png" />-->
+                                        <!--</h:link>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="fix"></div>-->
+                            <!--</h:panelGroup>-->
+
                             <div class="rowElem">
                                 <h:outputLabel value="Description:" for='taEditTaskDesc' />
                                 <div class="formRight">
@@ -329,12 +356,20 @@
                             <div class="fix"></div>
                         </div>
                     </fieldset>
+                    <h:inputHidden id="selectedPreEditTask" value="#{requestData.selectedTaskId}"/>
+                    <!--<h:commandButton id="btnRemovePreEditTaskSubmit" action="#{requestData.removePreEditTask}" style="display:none;">-->
+                        <!--<f:ajax execute="editTaskId" onerror="handleFormError" onevent="function(data) {crudResourceEventHandler(data);}" render="pretaskEditDiv" />-->
+                    <!--</h:commandButton>-->
+                    <h:commandButton id="btnEditTaskDialogClose" action="#{taskController.closeAndReset}" style="display:none;">
+                        <f:ajax execute=""  action="" onerror="handleFormError" onevent="function(data) {resetEditTaskDialogAfterClose(data);}" render="@form" />
+                    </h:commandButton>
                     <h:commandButton id="btnEditTaskSubmitId" action="#{taskController.loadTask}" style="display:none;">
                         <f:ajax execute="editTaskId" onerror="handleFormError" onevent="function(data) {loadTaskEventHandler(data);}" render="@form :GanttDiv" />
                     </h:commandButton>
                     <h:commandButton id="btnEditTaskSubmit" action="#{taskController.update}" style="display:none;">
                         <f:ajax execute="@form" onerror="handleFormError" onevent="function(data) {editTaskEventHandler(data);}" render="@form :GanttDiv" />
                     </h:commandButton>
+                    <s:validateForm validatorId="taskEditValidator"/>
                 </h:form>
             </h:panelGroup>
             <div class="fix"></div>

@@ -43,7 +43,7 @@ project.xhtml
 K 25
 svn:wc:ra_dav:version-url
 V 74
-/svn/project/!svn/ver/15695/mind/MPP/src/main/webapp/modules/project.xhtml
+/svn/project/!svn/ver/17498/mind/MPP/src/main/webapp/modules/project.xhtml
 END
 ganttchart.xhtml
 K 25
@@ -55,5 +55,5 @@ projectdetail.xhtml
 K 25
 svn:wc:ra_dav:version-url
 V 80
-/svn/project/!svn/ver/16302/mind/MPP/src/main/webapp/modules/projectdetail.xhtml
+/svn/project/!svn/ver/17498/mind/MPP/src/main/webapp/modules/projectdetail.xhtml
 END

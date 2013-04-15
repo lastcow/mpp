@@ -1,6 +1,8 @@
 
 var rootPath;
 var ganttChartControl;
+var taskPanelPositionLeft = 0;
+var taskPanelPositionTop = 0;
 /**
  * Init
  */
@@ -13,6 +15,8 @@ function initComponent(){
 	$('#btnNewTask').on('click', function(){
 		showDialogButton('new');
         $('#divTaskForm').dialog('open');
+
+        rememberTaskScrollPosition();
 	});
 
     initTaskForm();
@@ -47,7 +51,7 @@ function initComponent(){
         },
 
         close: function( event, ui ){
-
+            $('#btnEditTaskDialogClose').click();
         }
     });
 
@@ -200,6 +204,8 @@ function loadActual(){
  * @param task
  */
 function onTaskClick(task){
+
+    rememberTaskScrollPosition();
     // Assign id to hidden field
     $('#editTaskId').val(task.getId());
     $('#btnEditTaskSubmitId').click();
@@ -220,8 +226,11 @@ function crudTaskEventHandler(data){
         if(isFormValid()){
             $('#divTaskForm').dialog('close');
         }
+
+        $('#btnResetTaskPanelPosition').click();
+
 	}else if(data.status == "complete"){
-		
+
 	}
 }
 
@@ -230,8 +239,11 @@ function editTaskEventHandler(data){
         // Loading...
     }else if(data.status == "success"){
         initComponent();
+        if(isEditTaskFormValid()){
+            $('#divEditTaskForm').dialog('close');
+        }
 
-        $('#divEditTaskForm').dialog('close');
+        $('#btnResetTaskPanelPosition').click();
     }else if(data.status == "complete"){
 
     }
@@ -341,6 +353,13 @@ function removeTask(taskId){
     $('#btnRemovePreTaskSubmit').click();
 }
 
+function removePreTask(taskId){
+    // Assign to hidden field.
+    $('#selectedPreTask').val(taskId);
+    // Submit
+    $('#btnRemovePreEditTaskSubmit').click();
+}
+
 /**
  * Check form validation
  * @return {boolean}
@@ -352,6 +371,15 @@ function isFormValid(){
         $('#comboNewTaskParent').hasClass('invalid') ||
         $('#comboNewTaskPred').hasClass('invalid') ||
         $('#taNewTaskDesc').hasClass('invalid'));
+}
+
+/**
+ * Check form validation (edit task form)
+ * @returns {boolean}
+ */
+function isEditTaskFormValid(){
+    return !($('#txtEditTaskName').hasClass('invalid') ||
+        $('#txtEditTaskStartDate').hasClass('invalid'));
 }
 
 /**
@@ -373,6 +401,10 @@ function initTaskForm(){
     });
 
     $('#linkOpenPreTaskForm').on('click', function(){
+        $('#divTaskDialogForm').dialog('open');
+    })
+
+    $('#linkOpenPreEditTaskForm').on('click', function(){
         $('#divTaskDialogForm').dialog('open');
     })
 
@@ -430,6 +462,27 @@ function resetTaskDialogAfterClose(data){
 }
 
 /**
+ * Reset task form after close.
+ * @param data
+ */
+function resetEditTaskDialogAfterClose(data){
+    if(data.status == 'success'){
+        // Init task form and clean everything.
+        uniformElement('taskform');
+        uniformElement('newTaskDialogForm');
+        // Remove error class
+        if($('#txtEditTaskName').hasClass('invalid')) $('#txtEditTaskName').removeClass('invalid');
+        if($('#txtEditTaskPercentage').hasClass('invalid')) $('#txtEditTaskPercentage').removeClass('invalid');
+        if($('#txtEditTaskStartDate').hasClass('invalid')) $('#txtEditTaskStartDate').removeClass('invalid');
+        if($('#txtEditTaskActualStartDate').hasClass('invalid')) $('#txtEditTaskActualStartDate').removeClass('invalid');
+        if($('#txtEditTaskEndDate').hasClass('invalid')) $('#txtEditTaskEndDate').removeClass('invalid');
+        if($('#txtEditTaskActualEndDate').hasClass('invalid')) $('#txtEditTaskActualEndDate').removeClass('invalid');
+        // Init form
+        initTaskForm();
+    }
+}
+
+/**
  * Uniform
  * @param type
  */
@@ -445,4 +498,21 @@ function uniformElement(type){
     if(type == 'newTaskDialogForm'){
         $('#comboNewTaskPred').uniform();
     }
+}
+
+
+/**
+ * Get taskpanel position
+ */
+function rememberTaskScrollPosition(){
+    taskPanelPositionLeft = $('.taskPanel').parent().scrollLeft();
+    taskPanelPositionTop = $('.taskPanel').parent().scrollTop();
+}
+
+/**
+ * Set taskpanel position
+ */
+function setTaskScrollPosition(){
+    $('.taskPanel').parent().scrollLeft(taskPanelPositionLeft);
+    $('.taskPanel').parent().scrollTop(taskPanelPositionTop);
 }
