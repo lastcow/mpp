@@ -120,6 +120,9 @@ function projectEventHandler(data){
 		
 		// Reformat table.
 		formatDataTable();
+
+        // Reload
+        location.reload();
 	}else if(data.status == "complete"){
 		
 	}

@@ -40,6 +40,8 @@ public class Util {
     public static final int PREFERENCE_SEARCH_ASTART_DATE2 = 8;
     public static final int PREFERENCE_SEARCH_AEND_DATE1 = 9;
     public static final int PREFERENCE_SEARCH_AEND_DATE2 = 10;
+    public static final int PREFERENCE_TASKPANEL_SCROLLLEFT = 11;
+    public static final int PREFERENCE_TASKPANEL_SCROLLTOP = 12;
 
     public static final int HOURS_PER_DAY = 8;
 

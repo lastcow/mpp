@@ -34,6 +34,7 @@
 	    <script type="text/javascript" src="#{request.contextPath}/resources/plugins/forms/jquery.validationEngine.js"></script>
 	    <script type="text/javascript" src="#{request.contextPath}/resources/plugins/ui/jquery-impromptu.js"></script>
 	    <script type="text/javascript" src="#{request.contextPath}/resources/js/jquery.showLoading.js"></script>
+        <script type="text/javascript" src="#{request.contextPath}/resources/js/jquery.cookie.js"></script>
 
 	    <!-- Custom script -->
 	    <ui:insert name="customJS"/>

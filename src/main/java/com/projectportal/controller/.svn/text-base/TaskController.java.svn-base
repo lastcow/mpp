@@ -191,6 +191,9 @@ public @Named @ViewScoped class TaskController implements Serializable{
             editTask.setStatus(Util.getStatusByName(em, Util.STATUS_IN_PROGRESS));
         }
 
+
+        editTask = this.adjustDatetime(editTask);
+
         // reset hours.
         editTask.setTaskDurationHour(Util.getWorkingHourBetweenTwoDate(new LocalDate(editTask.getTaskEstimatedStartDate()), new LocalDate(editTask.getTaskEstimatedEndDate())));
 

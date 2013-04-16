@@ -222,7 +222,7 @@ DROP TABLE IF EXISTS `mppdb`.`Preference` ;
 CREATE  TABLE IF NOT EXISTS `mppdb`.`Preference` (
   `preferenceId` INT NOT NULL ,
   `userId` VARCHAR(36) NOT NULL ,
-  `value` VARCHAR(500) NOT NULL ,
+  `value` VARCHAR(500) NULL ,
   PRIMARY KEY (`preferenceId`) ,
   INDEX `fk_Preference_User1` (`userId` ASC) ,
   CONSTRAINT `fk_Preference_User1`
@@ -309,5 +309,26 @@ COMMIT;
 START TRANSACTION;
 USE `mppdb`;
 INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayDesc`, `holidayName`, `startDate`, `endDate`, `fixed`) VALUES ('1', '元日', '元日', '2013-01-01', '2013-01-01', 1);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `mppdb`.`Preference`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mppdb`;
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (0, '1', '1');
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (1, '1', NULL);
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (2, '1', '5');
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (3, '1', NULL);
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (4, '1', NULL);
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (5, '1', NULL);
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (6, '1', NULL);
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (7, '1', NULL);
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (8, '1', NULL);
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (9, '1', NULL);
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (10, '1', NULL);
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (11, '1', '0');
+INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (12, '1', '0');
 
 COMMIT;

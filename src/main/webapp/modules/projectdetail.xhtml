@@ -96,10 +96,10 @@
                     </fieldset>
                     <s:validateForm validatorId="resourceValidator" />
                     <h:commandButton id="btnInsertResourceSubmit" action="#{requestData.insertResourceDto}" style="display: none;">
-                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {resourceEventHandler(data);}" render="@form :newTaskForm:resourceDiv :newTaskDialogForm"/>
+                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {resourceEventHandler(data);}" render="@form :newTaskForm:resourceDiv "/>
                     </h:commandButton>
                     <h:commandButton id="btnResourceClose" style="display: none;">
-                        <f:ajax execute="" onerror="handleFormError"  onevent="function(data) {resetResourceDialogAfterClosed(data);}" render="@form :newTaskForm:resourceDiv"/>
+                        <f:ajax execute="" onerror="handleFormError"  onevent="function(data) {resetResourceDialogAfterClosed(data);}" render="@form :newTaskForm:resourceDiv "/>
                     </h:commandButton>
                 </h:form>
             </h:panelGroup>
@@ -124,7 +124,7 @@
 
                     </fieldset>
                     <h:commandButton id="btnInsertTaskSubmit" action="#{requestData.insertPreTask}" style="display: none;">
-                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {pretaskEventHandler(data);}" render="@form :newTaskForm:pretaskDiv"/>
+                        <f:ajax execute="@form" onerror="handleFormError"  onevent="function(data) {pretaskEventHandler(data);}" render="@form :newTaskForm:pretaskDiv :editTaskForm:preTaskEditDiv"/>
                     </h:commandButton>
                     <h:commandButton id="btnTaskDialogFormClose" style="display: none;">
                         <f:ajax execute="" onerror="handleFormError"  onevent="function(data) {resetPreTaskDialogAfterClosed(data);}" render="@form :newTaskForm:pretaskDiv"/>
@@ -326,24 +326,24 @@
                                 <div class="fix"></div>
                             </div>
 
-                            <!--<h:panelGroup id="pretaskEditDiv" layout="block" class="rowElem">-->
-                                <!--<h:outputLabel value="Pre-tasks:"/>-->
-                                <!--<div class="formRight">-->
-                                    <!--<ui:repeat value="#{requestData.preTaskEditList}" var="task" varStatus="status">-->
-                                        <!--<h:outputText value="#{taskController.editTask.taskName}"/>-->
-                                        <!--<h:link onclick="removePreTask('#{taskController.editTask.taskId}'); return false;">-->
-                                            <!--<img src="#{request.contextPath}/resources/images/icons/dark/denied.png"/>-->
-                                        <!--</h:link>-->
-                                        <!--<h:outputText value=", " rendered="#{not status.last}"/>-->
-                                    <!--</ui:repeat>-->
-                                    <!--<div style="float:right;">-->
-                                        <!--<h:link id="linkOpenPreEditTaskForm" >-->
-                                            <!--<img src="#{request.contextPath}/resources/images/icons/color/chain.png" />-->
-                                        <!--</h:link>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="fix"></div>-->
-                            <!--</h:panelGroup>-->
+                            <h:panelGroup id="preTaskEditDiv" layout="block" class="rowElem">
+                                <h:outputLabel value="Pre-tasks:"/>
+                                <div class="formRight">
+                                    <ui:repeat value="#{requestData.preTaskList}" var="task" varStatus="status">
+                                        <h:outputText value="#{task.taskName}"/>
+                                        <h:link onclick="removePreTask('#{task.taskId}'); return false;">
+                                            <img src="#{request.contextPath}/resources/images/icons/dark/denied.png"/>
+                                        </h:link>
+                                        <h:outputText value=", " rendered="#{not status.last}"/>
+                                    </ui:repeat>
+                                    <div style="float:right;">
+                                        <h:link id="linkOpenPreEditTaskForm" >
+                                            <img src="#{request.contextPath}/resources/images/icons/color/chain.png" />
+                                        </h:link>
+                                    </div>
+                                </div>
+                                <div class="fix"></div>
+                            </h:panelGroup>
 
                             <div class="rowElem">
                                 <h:outputLabel value="Description:" for='taEditTaskDesc' />
