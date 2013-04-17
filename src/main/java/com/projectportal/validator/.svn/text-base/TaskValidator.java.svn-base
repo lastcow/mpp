@@ -93,18 +93,5 @@ public class TaskValidator extends AbstractValidator implements Validator {
             }
         }
 
-        // Pre task
-//        if(comboNewTaskPred.getValue() != null){
-//            // Check for start date.
-//            if(txtNewTaskStartDate.getValue() != null){
-//                // Start date can't early than pre task's end date.
-//                if(txtNewTaskStartDate.getValue().compareTo(comboNewTaskPred.getValue().getTaskEstimatedEndDate()) <= 0 ){
-//                    // Error
-//                    doError(txtNewTaskStartDate, "Invalid task start/end dates !", "New task start date must after pre-task end date ");
-//
-//                }
-//            }
-//        }
-
     }
 }

@@ -34,6 +34,9 @@ public class TaskEditValidator extends AbstractValidator implements Validator {
     @Inject InputElement<String> txtEditTaskName;
     @Inject InputElement<Integer> txtEditTaskPercentage;
     @Inject InputElement<Date> txtEditTaskStartDate;
+    @Inject InputElement<Date> txtEditTaskEndDate;
+    @Inject InputElement<Date> txtEditTaskActualStartDate;
+    @Inject InputElement<Date> txtEditTaskActualEndDate;
     @Inject InputElement<String> editTaskId;
 
 
@@ -59,6 +62,47 @@ public class TaskEditValidator extends AbstractValidator implements Validator {
                 if (! (txtEditTaskStartDate.getValue().compareTo(preTask.getTaskEstimatedEndDate()) > 0)){
                     // Error.
                     doError(txtEditTaskStartDate, "Invalid task start/end dates !", "Task start date must be after pre-task end date");
+                }
+            }
+        }
+
+        Date estimatedStartDate = txtEditTaskStartDate.getValue();
+        Date estimatedEndDate = txtEditTaskEndDate.getValue();
+        Date actualStartDate = txtEditTaskActualStartDate.getValue();
+        Date actualEndDate = txtEditTaskActualEndDate.getValue();
+
+        // Check for the start/end date.
+        if(estimatedStartDate != null && estimatedEndDate != null){
+            if(estimatedStartDate.compareTo(estimatedEndDate) > 0){
+                // Start date can't be after end date.
+                doError(txtEditTaskStartDate, "Invalid task start/end dates !", "Task estimated start date must be before estimated end date");
+            }
+        }
+
+        logger.info("Validate actual start/end date: " + actualStartDate + "/" + actualEndDate);
+
+
+        if(actualStartDate != null && actualEndDate != null){
+            // Check for time period.
+            if(actualStartDate.compareTo(actualEndDate) > 0){
+                logger.info("ask end date must be after task start date: " + (actualStartDate.compareTo(actualEndDate) > 0));
+                // Wrong
+                doError(txtEditTaskActualEndDate, "Invalid task start/end dates !", "Task end date must be after task start date ");
+            }
+        }
+
+        // Check for pre tasks.
+        if(requestData.getPreTaskList() != null && requestData.getPreTaskList().size() > 0){
+            preTask = requestData.getPreTaskList().get(0);
+            if(preTask != null){
+                Date preTaskEndDate = preTask.getTaskActualEndDate() == null ? preTask.getTaskEstimatedEndDate() : preTask.getTaskActualEndDate();
+
+                logger.info("Compare to pretask: " + preTask.toString());
+                if( actualStartDate != null){
+                    if( ! (actualStartDate.compareTo(preTaskEndDate) > 0 )){
+                        // Error
+                        doError(txtEditTaskActualStartDate, "Invalid task start/end dates !", "Task actual start date must be after pre-task end date");
+                    }
                 }
             }
         }

@@ -17,6 +17,9 @@ function initComponent(){
     $('#wbstype').html('WBS - Baseline');
 	
 	$('#btnNewTask').on('click', function(){
+        // Set current Date
+        setCurrentDate();
+
 		showDialogButton('new');
         $('#divTaskForm').dialog('open');
 
@@ -50,6 +53,7 @@ function initComponent(){
         resizable: false,
         width: 600,
         buttons:{
+            // 'Delete Task': function() { $('#btnEditTaskDeleteSubmit').click(); },
             'Edit Task': function(){ $('#btnEditTaskSubmit').click(); },
             'Cancel': function(){$(this).dialog('close');}
         },
@@ -122,11 +126,13 @@ function initComponent(){
 //    loadBaseline();
 
     $('#btnTriggleBaseline').on('click', function(){
+        rememberTaskScrollPosition();
         $('#wbstype').html('WBS - Baseline');
         loadBaseline();
     } ) ;
 
     $('#btnTriggleActual').on('click', function(){
+        rememberTaskScrollPosition();
         $('#wbstype').html('WBS - Actual');
         loadActual();
     });
@@ -167,6 +173,9 @@ function loadActual(){
         }).always(function (){
             // hide loading.
             $('#GanttDiv').hideLoading();
+
+            // Set task panel position
+            setTaskScrollPosition();
         });
 }
 
@@ -209,10 +218,12 @@ function editTaskEventHandler(data){
     if(data.status == "begin"){
         // Loading...
     }else if(data.status == "success"){
-        initComponent();
+
         if(isEditTaskFormValid()){
             $('#divEditTaskForm').dialog('close');
         }
+
+        initEditTaskForm();
 
 //        $('#btnResetTaskPanelPosition').click();
     }else if(data.status == "complete"){
@@ -282,6 +293,7 @@ function crudResourceEventHandler(data){
     }else if(data.status == "success" ){
         // Success...
         initTaskForm();
+        uniformElement('newTaskDialogForm');
     }else if(data.status == "complete"){
 
     }
@@ -349,7 +361,9 @@ function isFormValid(){
  */
 function isEditTaskFormValid(){
     return !($('#txtEditTaskName').hasClass('invalid') ||
-        $('#txtEditTaskStartDate').hasClass('invalid'));
+        $('#txtEditTaskStartDate').hasClass('invalid') ||
+        $('#txtEditTaskActualEndDate').hasClass('invalid') ||
+        $('#txtEditTaskActualStartDate').hasClass('invalid'));
 }
 
 /**
@@ -477,6 +491,35 @@ function uniformElement(type){
     if(type == 'newTaskDialogForm'){
         $('#comboNewTaskPred').uniform();
     }
+}
+
+/**
+ * Set init date to new task form.
+ */
+function setCurrentDate(){
+    var d = new Date();
+
+    var month = d.getMonth()+1;
+    var day = d.getDate();
+
+    currentDate = d.getFullYear() + '/' +
+        ((''+month).length<2 ? '0' : '') + month + '/' +
+        ((''+day).length<2 ? '0' : '') + day;
+
+    dPlusOne = new Date();
+    dPlusOne.setDate(d.getDate() + 1);
+
+    monthPlus = dPlusOne.getMonth() + 1;
+    dayPlus = dPlusOne.getDate();
+
+    currentDatePlusOne = dPlusOne.getFullYear() + '/' +
+        ((''+monthPlus).length<2 ? '0' : '') + monthPlus + '/' +
+        ((''+dayPlus).length<2 ? '0' : '') + dayPlus;
+
+
+    $('#txtNewTaskStartDate').val(currentDate);
+    $('#txtNewTaskEndDate').val(currentDatePlusOne);
+
 }
 
 

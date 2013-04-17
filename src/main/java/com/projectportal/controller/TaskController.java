@@ -113,6 +113,9 @@ public @Named @ViewScoped class TaskController implements Serializable{
 
         newTask.setTaskDurationHour(this.getWorkingHourBetweenTwoDate(new LocalDate(newTask.getTaskEstimatedStartDate()), new LocalDate(newTask.getTaskEstimatedEndDate())));
 
+        // Same duration hour for estimate and actual
+        newTask.setTaskActualDurationHour(newTask.getTaskDurationHour());
+
         // Task start date equals estimated date for now.
         newTask.setTaskActualStartDate(newTask.getTaskEstimatedStartDate());
 
@@ -151,6 +154,7 @@ public @Named @ViewScoped class TaskController implements Serializable{
 		
 		// Reset
 		newTask = new Task();
+        requestData.setPreTaskList(new ArrayList<Task>());
 	}
 
     /**
@@ -197,6 +201,14 @@ public @Named @ViewScoped class TaskController implements Serializable{
         // reset hours.
         editTask.setTaskDurationHour(Util.getWorkingHourBetweenTwoDate(new LocalDate(editTask.getTaskEstimatedStartDate()), new LocalDate(editTask.getTaskEstimatedEndDate())));
 
+
+        // For actual hours.
+        if(editTask.getTaskActualEndDate() != null){
+            // Task has completed. Calculate the hours and reset the consequence task actually start date.
+            editTask.setTaskActualDurationHour(Util.getWorkingHourBetweenTwoDate(new LocalDate(editTask.getTaskActualStartDate()), new LocalDate(editTask.getTaskActualEndDate())));
+        }
+
+
         em.merge(editTask);
 
 
@@ -206,24 +218,42 @@ public @Named @ViewScoped class TaskController implements Serializable{
                 // Modify child task date.
                 for(Task childTask : originalTask.getDependentTasks()){
                     // Only end date > sequential task's estimated start date, we do modify.
-                    if(editEndDate.isAfter(new DateTime(childTask.getTaskEstimatedStartDate()))){
-                        // Get the day difference, it's the next day of previouse task's estimated end date.
-                        int daysToBeAdded = Days.daysBetween(new DateTime(childTask.getTaskEstimatedStartDate()), editEndDate.plusDays(1)).getDays();
+                    if(editEndDate.compareTo(new DateTime(childTask.getTaskEstimatedStartDate())) >= 0 ){
+                        // Get the day difference, it's the next day of previous task's estimated end date.
+                        int daysToBeAdded = Days.daysBetween(new DateTime(childTask.getTaskEstimatedStartDate()), (new DateTime(editTask.getTaskEstimatedEndDate())).plusDays(1)).getDays();
                         this.doModifyEstimatedDate(childTask, daysToBeAdded);
                     }
                 }
             }
         }
 
+        DateTime editActualEndDate = new DateTime(editTask.getTaskActualEndDate());
+        // Adjust the start date.
+        for(Task subTask : originalTask.getDependentTasks()){
+
+            logger.info("Before Actual Adjust : ====== " + subTask.toString());
+            // Only those task not start yet can be changed.
+            if(editActualEndDate.isAfter(new DateTime(subTask.getTaskActualStartDate()))){
+                // Days between
+                int daysToBeAdded = Days.daysBetween(new DateTime(subTask.getTaskActualStartDate()), editActualEndDate.plusDays(1)).getDays();
+                this.doModifyActualDate(subTask, daysToBeAdded);
+            }
+        }
 //        editTask.setDependentTasks(originalTask.getDependentTasks());
 //
 //        for(Task task : editTask.getDependentTasks()){
 //            System.out.println("Task: " + task.getTaskName() + " time: " + task.getTaskEstimatedStartDate()+"/"+task.getTaskEstimatedEndDate());
 //        }
 
+    }
 
+    /**
+     * Delete task.
+     */
+    public void delete(){
+        if(editTask == null) return;
 
-
+        // Get
     }
 
     /**
@@ -254,7 +284,7 @@ public @Named @ViewScoped class TaskController implements Serializable{
 
         List<Task> tmpPreTaskList = new ArrayList<Task>();
         tmpPreTaskList.add(editTask.getPreTask());
-        requestData.setPreTaskEditList(tmpPreTaskList);
+        requestData.setPreTaskList(tmpPreTaskList);
 
         logger.info("Loaded task: " + editTask.toString());
     }
@@ -304,16 +334,73 @@ public @Named @ViewScoped class TaskController implements Serializable{
             task.setTaskActualStartDate( task.getTaskEstimatedStartDate());
         }
 
-        // Recrusive call
-        if(task.getDependentTasks() != null && task.getDependentTasks().size() > 0){
-            for(Task childTask : task.getDependentTasks()){
-                doModifyEstimatedDate(childTask, daysDiff);
-            }
-        }
 
         System.out.println("Task: " + task.getTaskName() + " time: " + task.getTaskEstimatedStartDate()+"/"+task.getTaskEstimatedEndDate());
 
+        // Adjust for the holiday.
+        task = this.adjustDatetime(task);
+        // Adjust the estimated hours
+        task.setTaskDurationHour(this.getWorkingHourBetweenTwoDate(new LocalDate(task.getTaskEstimatedStartDate()), new LocalDate(task.getTaskEstimatedEndDate())));
+
+
         em.merge(task);
+
+        // Recrusive call
+        if(task.getDependentTasks() != null && task.getDependentTasks().size() > 0){
+            for(Task childTask : task.getDependentTasks()){
+                if(estimatedEndDate.isAfter(new DateTime(childTask.getTaskEstimatedStartDate()))){
+                    doModifyEstimatedDate(childTask, Days.daysBetween(new DateTime(childTask.getTaskEstimatedStartDate()), estimatedEndDate.plusDays(1)).getDays());
+                }
+            }
+        }
+    }
+
+    /**
+     * Adjust task's actual date.
+     * @param task
+     * @param daysBetween
+     */
+    private void doModifyActualDate(Task task, int daysBetween){
+
+        DateTime actualStartDate = new DateTime(task.getTaskActualStartDate());
+        DateTime actualEndDate = new DateTime(task.getTaskActualEndDate());
+
+        // Set the actual start date.
+        task.setTaskActualStartDate(actualStartDate.plusDays(daysBetween).toDate());
+        if(actualEndDate != null){
+            task.setTaskActualEndDate(actualEndDate.plusDays(daysBetween).toDate());
+        }
+
+        // Adjust for the holiday.
+//        task = this.adjustDatetime(task);
+        // Adjust the estimated hours
+        if(task.getTaskActualEndDate() != null){
+            task.setTaskActualDurationHour(this.getWorkingHourBetweenTwoDate(new LocalDate(task.getTaskActualStartDate()), new LocalDate(task.getTaskActualEndDate())));
+        }else{
+            task.setTaskActualDurationHour(this.getWorkingHourBetweenTwoDate(new LocalDate(task.getTaskActualStartDate()), new LocalDate(task.getTaskEstimatedEndDate())));
+        }
+
+        // Percistence.
+        em.merge(task);
+
+        actualEndDate = new DateTime(task.getTaskActualEndDate());
+
+        logger.info("========== Actual task info: " + task.toString());
+
+        // Check for subsequence tasks.
+        if(actualEndDate != null){
+            for(Task subTask : task.getDependentTasks()){
+
+                // Only those task not start yet can be changed.
+                if(actualEndDate.compareTo(new DateTime(subTask.getTaskActualEndDate())) >= 0){
+                    // Days between
+                    int daysToBeAdded = Days.daysBetween(new DateTime(subTask.getTaskActualStartDate()), actualEndDate.plusDays(1)).getDays();
+
+                    logger.info("=================== Days diff for actually date: " + daysToBeAdded);
+                    this.doModifyActualDate(subTask, daysToBeAdded);
+                }
+            }
+        }
     }
 
 
@@ -326,6 +413,7 @@ public @Named @ViewScoped class TaskController implements Serializable{
 
         // Get list of holidays.
         List<Holiday> holidayList = em.createQuery("SELECT holiday FROM Holiday holiday ").getResultList();
+
         DateTime startDate = new DateTime(task.getTaskEstimatedStartDate());
         DateTime endDate = new DateTime(task.getTaskEstimatedEndDate());
         DateTime holidayStartDate = null;

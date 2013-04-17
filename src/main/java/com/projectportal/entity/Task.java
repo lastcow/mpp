@@ -30,6 +30,8 @@ public class Task implements Serializable {
 
 	private int taskDurationHour;
 
+    private int taskActualDurationHour;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=false)
 	private Date taskEstimatedEndDate;
@@ -250,6 +252,14 @@ public class Task implements Serializable {
 	public void setUserXtasks(List<UserXTask> userXtasks) {
 		this.userXtasks = userXtasks;
 	}
+
+    public int getTaskActualDurationHour() {
+        return taskActualDurationHour;
+    }
+
+    public void setTaskActualDurationHour(int taskActualDurationHour) {
+        this.taskActualDurationHour = taskActualDurationHour;
+    }
 
     @Override
     public String toString() {

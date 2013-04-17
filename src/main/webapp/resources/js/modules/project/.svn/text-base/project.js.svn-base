@@ -111,6 +111,8 @@ function projectEventHandler(data){
                 $('#txtNewProjectStartDate').hasClass('invalid') ||
                 $('#txtProjectDesc').hasClass('invalid'))){
             $('#divProjectForm').dialog('close');
+            // Reload
+            location.reload();
         }
 
 		// Remove tr if no data existing. It's jsf datatable natual
@@ -121,8 +123,7 @@ function projectEventHandler(data){
 		// Reformat table.
 		formatDataTable();
 
-        // Reload
-        location.reload();
+
 	}else if(data.status == "complete"){
 		
 	}

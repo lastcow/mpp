@@ -75,12 +75,7 @@ public class RESTWBS {
         }else if(wbsType == Util.WBS_ACTUAL){
             taskDto.setEst(new StringBuilder(dateFormat.format(task.getTaskActualStartDate())).toString());
             taskDto.setPrecentCompleted(task.getTaskPercentComplete());
-            if(task.getTaskActualEndDate() != null){
-                //TODO Calculate acutal task time.
-                taskDto.setDuration(task.getTaskDurationHour());
-            }else{
-                taskDto.setDuration(task.getTaskDurationHour());
-            }
+            taskDto.setDuration(task.getTaskActualDurationHour());
         }
 		taskDto.setPredecessorTasks(task.getPreTask() == null ? "" : task.getPreTask().getTaskId());
 

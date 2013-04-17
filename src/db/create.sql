@@ -148,6 +148,7 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`Task` (
   `taskEstimatedStartDate` DATETIME NOT NULL ,
   `taskEstimatedEndDate` DATETIME NOT NULL ,
   `taskDurationHour` INT NULL DEFAULT 1 ,
+  `taskActualDurationHour` INT NULL ,
   `taskPercentComplete` FLOAT NOT NULL DEFAULT 0.0 ,
   `taskDesc` VARCHAR(1000) NULL ,
   `parentTaskId` VARCHAR(36) NULL ,
@@ -303,14 +304,6 @@ INSERT INTO `mppdb`.`Priority` (`priorityId`, `priorityName`, `priorityDesc`) VA
 
 COMMIT;
 
--- -----------------------------------------------------
--- Data for table `mppdb`.`Holiday`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `mppdb`;
-INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayDesc`, `holidayName`, `startDate`, `endDate`, `fixed`) VALUES ('1', '元日', '元日', '2013-01-01', '2013-01-01', 1);
-
-COMMIT;
 
 -- -----------------------------------------------------
 -- Data for table `mppdb`.`Preference`
@@ -330,5 +323,30 @@ INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (9, 
 INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (10, '1', NULL);
 INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (11, '1', '0');
 INSERT INTO `mppdb`.`Preference` (`preferenceId`, `userId`, `value`) VALUES (12, '1', '0');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `mppdb`.`Preference`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `mppdb`;
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('1', '元日', '2013-01-01', '1', '元日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('2', '成人の日', '2013-01-14', '1','成人の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('3', '建国記念の日', '2013-02-11', '1','建国記念の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('4', '春分の日', '2013-03-20', '1','春分の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('5', '昭和の日', '2013-04-29', '1','昭和の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('6', '憲法記念日', '2013-05-03', '1','憲法記念日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('7', 'みどりの日', '2013-05-04', '1','みどりの日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('8', 'こどもの日', '2013-05-05', '1','こどもの日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('9', '振替休日', '2013-05-06', '1','振替休日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('10', '海の日', '2013-07-15', '1','海の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('11', '敬老の日', '2013-09-16', '1','敬老の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('12', '秋分の日', '2013-09-23', '1','秋分の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('13', '体育の日', '2013-10-14', '1','体育の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('14', '文化の日', '2013-11-03', '1','文化の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('15', '振替休日', '2013-11-04', '1','振替休日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('16', '勤労感謝の日', '2013-11-23', '1','勤労感謝の日');
+INSERT INTO `mppdb`.`Holiday` (`holidayId`, `holidayName`, `startDate`, `fixed`, `holidayDesc`) VALUES ('17', '天皇誕生日', '2013-12-23', '1','天皇誕生日');
 
 COMMIT;
