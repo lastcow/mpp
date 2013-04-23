@@ -551,7 +551,7 @@ function setTaskScrollPosition(){
  */
 function confirmDelete(event, taskName){
     if(event.status == "success"){
-        $.prompt("Are you sure want to delete task: <strong>" + taskName + "</strong> ?", {
+        $('#divEditTaskForm').prompt("Are you sure want to delete task: <strong>" + taskName + "</strong> ?", {
             title: "Confirm Deletion",
             buttons: { "Delete": true, "No": false },
             top: "40%",
