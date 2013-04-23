@@ -325,7 +325,16 @@
                                 </div>
                                 <div class="fix"></div>
                             </div>
-
+                            <div class="rowElem">
+                                <h:outputLabel value="Parent task:" for="comboEditTaskParent" />
+                                <div class="formRight">
+                                    <h:selectOneMenu id="comboEditTaskParent" value="#{taskController.editTask.parentTask}" converter="#{taskConverter}">
+                                        <f:selectItem itemValue="0" itemLabel="#{projStrings['combox_selecttask']}" />
+                                        <f:selectItems value="#{requestData.loadComboboxTasksByProject}" />
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="fix"></div>
+                            </div>
                             <h:panelGroup id="preTaskEditDiv" layout="block" class="rowElem">
                                 <h:outputLabel value="Pre-tasks:"/>
                                 <div class="formRight">
@@ -367,7 +376,7 @@
                         <f:ajax execute="@form" onerror="handleFormError" onevent="function(data) {editTaskEventHandler(data);}" render="@form" />
                     </h:commandButton>
                     <h:commandButton id="btnEditTaskDeleteSubmit" action="#{taskController.delete}" style="display:none;">
-                        <f:ajax execute="@form" onerror="handleFormError" onevent="function(data) {editTaskEventHandler(data);}" render="" />
+                        <f:ajax execute="@form" onerror="handleFormError" onevent="function(data) {editTaskEventHandler(data);}" render="" immediate="true" />
                     </h:commandButton>
 
                     <s:validateForm validatorId="taskEditValidator"/>

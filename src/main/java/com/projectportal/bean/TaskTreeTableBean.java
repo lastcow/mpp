@@ -18,7 +18,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class TaskTreeTableBean implements Serializable {
     @Inject
     Identity identity;
     @Inject
-    Logger log;
+    Logger logger;
 	private List<Task> taskList;
 
     /**
@@ -46,6 +47,8 @@ public class TaskTreeTableBean implements Serializable {
      */
     @PostConstruct
     public void loadCreterial(){
+        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+
         searchPreference = new TaskSearchPreferenceDto();
         User loginUser = em.find(User.class, identity.getUser().getId());
         for(Preference preference : loginUser.getPreferences()){
@@ -60,28 +63,60 @@ public class TaskTreeTableBean implements Serializable {
                     status = em.find(Status.class, preference.getValue());
                 }
                 if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_ESTART_DATE1){
-                    searchPreference.setEstimatedStartDate1(Date.valueOf(preference.getValue()));
+                    try {
+                        searchPreference.setEstimatedStartDate1(format.parse(preference.getValue()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
                 }
                 if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_ESTART_DATE2){
-                    searchPreference.setEstimatedStartDate2(Date.valueOf(preference.getValue()));
+                    try {
+                        searchPreference.setEstimatedStartDate2(format.parse(preference.getValue()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
                 }
                 if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_EEND_DATE1){
-                    searchPreference.setEstimatedEndDate1(Date.valueOf(preference.getValue()));
+                    try {
+                        searchPreference.setEstimatedEndDate1(format.parse(preference.getValue()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
                 }
                 if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_EEND_DATE2){
-                    searchPreference.setEstimatedEndDate2((Date.valueOf(preference.getValue())));
+                    try {
+                        searchPreference.setEstimatedEndDate2((format.parse(preference.getValue())));
+                    } catch (ParseException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
                 }
                 if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_ASTART_DATE1){
-                    searchPreference.setActualStartDate1(Date.valueOf(preference.getValue()));
+                    try {
+                        searchPreference.setActualStartDate1(format.parse(preference.getValue()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
                 }
                 if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_ASTART_DATE2){
-                    searchPreference.setActualStartDate2(Date.valueOf(preference.getValue()));
+                    try {
+                        searchPreference.setActualStartDate2(format.parse(preference.getValue()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
                 }
                 if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_AEND_DATE1){
-                    searchPreference.setActualEndDate1(Date.valueOf(preference.getValue()));
+                    try {
+                        searchPreference.setActualEndDate1(format.parse(preference.getValue()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
                 }
                 if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_AEND_DATE2){
-                    searchPreference.setActualEndDate2(Date.valueOf(preference.getValue()));
+                    try {
+                        searchPreference.setActualEndDate2(format.parse(preference.getValue()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
                 }
 
             }
@@ -101,68 +136,90 @@ public class TaskTreeTableBean implements Serializable {
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_PROJECT){
                 if(project != null){
                     preference.setValue(project.getProjectId());
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_OWNER){
                 if(user != null){
                     preference.setValue(user.getUserId());
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_TASK_STATUS){
                 if(status != null){
                     preference.setValue(status.getStatusId());
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_ESTART_DATE1){
                 if(searchPreference.getEstimatedStartDate1() != null){
                     preference.setValue(String.valueOf(searchPreference.getEstimatedStartDate1()));
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_ESTART_DATE2){
                 if(searchPreference.getEstimatedStartDate2() != null){
                     preference.setValue(String.valueOf(searchPreference.getEstimatedStartDate2()));
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_EEND_DATE1){
                 if(searchPreference.getEstimatedEndDate1() != null){
                     preference.setValue(String.valueOf(searchPreference.getEstimatedEndDate1()));
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_EEND_DATE2){
                 if(searchPreference.getEstimatedEndDate2() != null){
                     preference.setValue(String.valueOf(searchPreference.getEstimatedEndDate2()));
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_ASTART_DATE1){
                 if(searchPreference.getActualStartDate1() != null){
                     preference.setValue(String.valueOf(searchPreference.getActualStartDate1()));
-                    em.persist(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_ASTART_DATE2){
                 if(searchPreference.getActualStartDate2() != null){
                     preference.setValue(String.valueOf(searchPreference.getActualStartDate2()));
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_AEND_DATE1){
                 if(searchPreference.getActualEndDate1() != null){
                     preference.setValue(String.valueOf(searchPreference.getActualEndDate1()));
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
             if(preference.getPreferenceId() == Util.PREFERENCE_SEARCH_AEND_DATE2){
                 if(searchPreference.getActualEndDate2() != null){
                     preference.setValue(String.valueOf(searchPreference.getActualEndDate2()));
-                    em.merge(preference);
+                }else{
+                    preference.setValue(null);
                 }
+                em.merge(preference);
             }
         }
 	}

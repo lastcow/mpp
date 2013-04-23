@@ -3,6 +3,12 @@ svn:wc:ra_dav:version-url
 V 73
 /svn/project/!svn/ver/12838/mind/MPP/src/main/java/com/projectportal/util
 END
+mppIgnore.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/project/!svn/ver/17754/mind/MPP/src/main/java/com/projectportal/util/mppIgnore.java
+END
 Resources.java
 K 25
 svn:wc:ra_dav:version-url

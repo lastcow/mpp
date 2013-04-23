@@ -46,14 +46,24 @@ public class TaskEditValidator extends AbstractValidator implements Validator {
         logger.info("Start task edit form validation");
         Task task = em.find(Task.class, editTaskId.getValue());
         Project project = task.getProject();
+        Task parentTask = task.getParentTask();
         Task preTask = task.getPreTask();
 
         // Start Date can't earyly than project start date.
         if(txtEditTaskStartDate.getValue() != null ){
 
-            if(txtEditTaskStartDate.getValue().compareTo(project.getStartDate()) <0 ){
-                // Error.
-                doError(txtEditTaskStartDate, "Invalid task start/end dates !", "Task start date must be after project start date");
+            if(project != null){
+                if(txtEditTaskStartDate.getValue().compareTo(project.getStartDate()) <0 ){
+                    // Error.
+                    doError(txtEditTaskStartDate, "Invalid task start/end dates !", "Task start date must be after project start date");
+                }
+            }
+
+            if(parentTask != null){
+                if(txtEditTaskStartDate.getValue().compareTo(parentTask.getTaskEstimatedStartDate()) <0 ){
+                    // Error.
+                    doError(txtEditTaskStartDate, "Invalid task start/end dates !", "Task start date must be after parent task start date");
+                }
             }
 
             // Check for the pretask.

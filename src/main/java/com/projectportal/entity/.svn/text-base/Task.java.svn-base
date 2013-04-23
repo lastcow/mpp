@@ -67,7 +67,7 @@ public class Task implements Serializable {
 	private Task parentTask;
 
 	//bi-directional many-to-one association to Task
-	@OneToMany(mappedBy="parentTask", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy="parentTask")
 	private List<Task> childTasks;
 
     //bi-directional many-to-one association to Task
@@ -76,7 +76,7 @@ public class Task implements Serializable {
     private Task preTask;
 
     //bi-directional many-to-one association to Task
-    @OneToMany(mappedBy="preTask", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy="preTask")
     private List<Task> dependentTasks;
 
 	//bi-directional many-to-one association to UserXTask

@@ -16,7 +16,7 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`RoleGroup` (
   `groupName` VARCHAR(150) NOT NULL ,
   `groupDesc` VARCHAR(1000) NULL ,
   PRIMARY KEY (`groupId`) )
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -32,11 +32,11 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`Role` (
   PRIMARY KEY (`roleId`) ,
   INDEX `fk_Role_Group1` (`groupId` ASC) ,
   CONSTRAINT `fk_Role_Group1`
-    FOREIGN KEY (`groupId` )
-    REFERENCES `mppdb`.`RoleGroup` (`groupId` )
+  FOREIGN KEY (`groupId` )
+  REFERENCES `mppdb`.`RoleGroup` (`groupId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -49,7 +49,7 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`Department` (
   `departmentName` VARCHAR(200) NOT NULL ,
   `departmentDesc` VARCHAR(1000) NULL ,
   PRIMARY KEY (`departmentId`) )
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -71,21 +71,21 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`User` (
   INDEX `fk_User_Role1` (`roleId` ASC) ,
   INDEX `fk_User_Department1` (`departmentId` ASC) ,
   CONSTRAINT `fk_User_Group1`
-    FOREIGN KEY (`groupId` )
-    REFERENCES `mppdb`.`RoleGroup` (`groupId` )
+  FOREIGN KEY (`groupId` )
+  REFERENCES `mppdb`.`RoleGroup` (`groupId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_Role1`
-    FOREIGN KEY (`roleId` )
-    REFERENCES `mppdb`.`Role` (`roleId` )
+  FOREIGN KEY (`roleId` )
+  REFERENCES `mppdb`.`Role` (`roleId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_Department1`
-    FOREIGN KEY (`departmentId` )
-    REFERENCES `mppdb`.`Department` (`departmentId` )
+  FOREIGN KEY (`departmentId` )
+  REFERENCES `mppdb`.`Department` (`departmentId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -102,11 +102,11 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`Project` (
   PRIMARY KEY (`projectId`) ,
   INDEX `fk_Project_User1` (`ownerId` ASC) ,
   CONSTRAINT `fk_Project_User1`
-    FOREIGN KEY (`ownerId` )
-    REFERENCES `mppdb`.`User` (`userId` )
+  FOREIGN KEY (`ownerId` )
+  REFERENCES `mppdb`.`User` (`userId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -119,7 +119,7 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`Status` (
   `statusName` VARCHAR(100) NOT NULL ,
   `statusDesc` VARCHAR(1000) NULL ,
   PRIMARY KEY (`statusId`) )
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -132,7 +132,7 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`Priority` (
   `priorityName` VARCHAR(100) NOT NULL ,
   `priorityDesc` VARCHAR(1000) NULL ,
   PRIMARY KEY (`priorityId`) )
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -163,31 +163,31 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`Task` (
   INDEX `fk_Task_Priority1` (`priorityId` ASC) ,
   INDEX `fk_Task_Task2` (`preTaskId` ASC) ,
   CONSTRAINT `fk_task_project`
-    FOREIGN KEY (`projectId` )
-    REFERENCES `mppdb`.`Project` (`projectId` )
+  FOREIGN KEY (`projectId` )
+  REFERENCES `mppdb`.`Project` (`projectId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Task_Task1`
-    FOREIGN KEY (`parentTaskId` )
-    REFERENCES `mppdb`.`Task` (`taskId` )
+  FOREIGN KEY (`parentTaskId` )
+  REFERENCES `mppdb`.`Task` (`taskId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Task_Status1`
-    FOREIGN KEY (`statusId` )
-    REFERENCES `mppdb`.`Status` (`statusId` )
+  FOREIGN KEY (`statusId` )
+  REFERENCES `mppdb`.`Status` (`statusId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Task_Priority1`
-    FOREIGN KEY (`priorityId` )
-    REFERENCES `mppdb`.`Priority` (`priorityId` )
+  FOREIGN KEY (`priorityId` )
+  REFERENCES `mppdb`.`Priority` (`priorityId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Task_Task2`
-    FOREIGN KEY (`preTaskId` )
-    REFERENCES `mppdb`.`Task` (`taskId` )
+  FOREIGN KEY (`preTaskId` )
+  REFERENCES `mppdb`.`Task` (`taskId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -203,16 +203,16 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`UserXTask` (
   INDEX `fk_User_has_Task_Task1` (`taskId` ASC) ,
   INDEX `fk_User_has_Task_User1` (`userId` ASC) ,
   CONSTRAINT `fk_User_has_Task_User1`
-    FOREIGN KEY (`userId` )
-    REFERENCES `mppdb`.`User` (`userId` )
+  FOREIGN KEY (`userId` )
+  REFERENCES `mppdb`.`User` (`userId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_has_Task_Task1`
-    FOREIGN KEY (`taskId` )
-    REFERENCES `mppdb`.`Task` (`taskId` )
+  FOREIGN KEY (`taskId` )
+  REFERENCES `mppdb`.`Task` (`taskId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -227,11 +227,11 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`Preference` (
   PRIMARY KEY (`preferenceId`) ,
   INDEX `fk_Preference_User1` (`userId` ASC) ,
   CONSTRAINT `fk_Preference_User1`
-    FOREIGN KEY (`userId` )
-    REFERENCES `mppdb`.`User` (`userId` )
+  FOREIGN KEY (`userId` )
+  REFERENCES `mppdb`.`User` (`userId` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -247,13 +247,14 @@ CREATE  TABLE IF NOT EXISTS `mppdb`.`Holiday` (
   `endDate` DATETIME NULL ,
   `fixed` TINYINT(1) NULL ,
   PRIMARY KEY (`holidayId`) )
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
 -- -----------------------------------------------------
 -- Data for table `mppdb`.`Role`
@@ -288,10 +289,10 @@ COMMIT;
 START TRANSACTION;
 USE `mppdb`;
 INSERT INTO `mppdb`.`Status` (`statusId`, `statusName`, `statusDesc`) VALUES ('1', 'New', NULL);
-INSERT INTO `mppdb`.`Status` (`statusId`, `statusName`, `statusDesc`) VALUES ('2', 'Pending', NULL);
+# INSERT INTO `mppdb`.`Status` (`statusId`, `statusName`, `statusDesc`) VALUES ('2', 'Pending', NULL);
 INSERT INTO `mppdb`.`Status` (`statusId`, `statusName`, `statusDesc`) VALUES ('3', 'In Progress', NULL);
 INSERT INTO `mppdb`.`Status` (`statusId`, `statusName`, `statusDesc`) VALUES ('4', 'Finish', NULL);
-INSERT INTO `mppdb`.`Status` (`statusId`, `statusName`, `statusDesc`) VALUES ('5', 'Reopen', NULL);
+# INSERT INTO `mppdb`.`Status` (`statusId`, `statusName`, `statusDesc`) VALUES ('5', 'Reopen', NULL);
 
 COMMIT;
 

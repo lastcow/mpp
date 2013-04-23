@@ -61,6 +61,8 @@ public @ViewScoped class RequestData extends AbstractProducer implements Seriali
      */
     public List<SelectItem> loadComboboxTasksByProject(){
 
+        if(selectedTaskId != null) log.info("Selected task: " + em.find(Task.class, selectedTaskId));
+
 		Project project = em.find(Project.class, projectId);
 //		List<Task> taskList = project.getTasks();
 //		comboTaskByProject = taskList;

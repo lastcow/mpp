@@ -253,7 +253,36 @@ public @Named @ViewScoped class TaskController implements Serializable{
     public void delete(){
         if(editTask == null) return;
 
-        // Get
+        // Get task.
+        Task taskToBeDeleted = em.find(Task.class, editTask.getTaskId());
+
+        // Deal with sub-tasks.
+        List<Task> childTasks = taskToBeDeleted.getChildTasks();
+        if(childTasks != null && childTasks.size() > 0){
+            // All child task's project id needs to be assigned.
+            Project project = this.getProjectFromTask(taskToBeDeleted);
+            for(Task childTask : childTasks){
+                childTask.setProject(project);
+                // Merge.
+                em.merge(childTask);
+            }
+
+        }
+
+        em.remove(taskToBeDeleted);
+    }
+
+    /**
+     * Get project from task
+     * @param task
+     * @return
+     */
+    private Project getProjectFromTask(Task task){
+        if(task.getProject() == null){
+            return this.getProjectFromTask(task.getParentTask());
+        } else{
+            return task.getProject();
+        }
     }
 
     /**
@@ -375,9 +404,9 @@ public @Named @ViewScoped class TaskController implements Serializable{
 //        task = this.adjustDatetime(task);
         // Adjust the estimated hours
         if(task.getTaskActualEndDate() != null){
-            task.setTaskActualDurationHour(this.getWorkingHourBetweenTwoDate(new LocalDate(task.getTaskActualStartDate()), new LocalDate(task.getTaskActualEndDate())));
+            task.setTaskActualDurationHour(this.getWorkingHourBetweenTwoDate(new LocalDate(task.getTaskActualEndDate()), new LocalDate(task.getTaskActualStartDate())));
         }else{
-            task.setTaskActualDurationHour(this.getWorkingHourBetweenTwoDate(new LocalDate(task.getTaskActualStartDate()), new LocalDate(task.getTaskEstimatedEndDate())));
+            task.setTaskActualDurationHour(this.getWorkingHourBetweenTwoDate(new LocalDate(task.getTaskEstimatedEndDate()), new LocalDate(task.getTaskActualStartDate())));
         }
 
         // Percistence.

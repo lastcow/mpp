@@ -53,8 +53,8 @@ function initComponent(){
         resizable: false,
         width: 600,
         buttons:{
-            // 'Delete Task': function() { $('#btnEditTaskDeleteSubmit').click(); },
             'Edit Task': function(){ $('#btnEditTaskSubmit').click(); },
+            'Delete Task': function() { $('#btnEditTaskDeleteSubmit').click(); },
             'Cancel': function(){$(this).dialog('close');}
         },
 
@@ -407,6 +407,7 @@ function initEditTaskForm(){
     $('#txtEditTaskStartDate').datepicker();
     $('#txtEditTaskActualStartDate').datepicker();
     $('#txtEditTaskEndDate').datepicker();
+    $('#comboEditTaskParent').uniform();
 }
 
 /**
