@@ -187,8 +187,6 @@ function onTaskClick(task){
 
     rememberTaskScrollPosition();
 
-    // Check for task status.
-    alert(task.getPercentCompleted());
     // Assign id to hidden field
     $('#editTaskId').val(task.getId())
     $('#btnEditTaskSubmitId').click();
@@ -367,7 +365,8 @@ function isEditTaskFormValid(){
         $('#txtEditTaskStartDate').hasClass('invalid') ||
         $('#txtEditTaskActualEndDate').hasClass('invalid') ||
         $('#txtEditTaskActualStartDate').hasClass('invalid') ||
-        $('#txtEditTaskEndDate').hasClass('invalid'));
+        $('#txtEditTaskEndDate').hasClass('invalid') ||
+        $('#txtEditTaskPercentage').hasClass('invalid'));
 }
 
 /**

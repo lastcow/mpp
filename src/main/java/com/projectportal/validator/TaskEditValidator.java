@@ -49,6 +49,11 @@ public class TaskEditValidator extends AbstractValidator implements Validator {
         Task parentTask = task.getParentTask();
         Task preTask = task.getPreTask();
 
+        if(txtEditTaskPercentage.getValue() == 100){
+            // Error.
+            doError(txtEditTaskPercentage, "Invalid task status !", "Can't modify completed task.");
+        }
+
         // Start Date can't earyly than project start date.
         if(txtEditTaskStartDate.getValue() != null ){
 
