@@ -279,6 +279,7 @@
                                 <h:outputLabel>Progress:</h:outputLabel>
                                 <div class="formRight" style="margin: 0;">
                                     <h:inputText id='txtEditTaskPercentage' value='#{taskController.editTask.taskPercentComplete}' styleClass='#{component.valid?"":"invalid"}' style="width: 100px !important;"><f:convertNumber/></h:inputText> %
+                                    <h:message for="txtEditTaskPercentage" styleClass="errorMsg" />
                                 </div>
                             </div>
                             <div class="rowElem">
