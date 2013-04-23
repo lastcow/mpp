@@ -32,7 +32,7 @@ public class TaskEditValidator extends AbstractValidator implements Validator {
 
     @Inject RequestData requestData;
     @Inject InputElement<String> txtEditTaskName;
-    @Inject InputElement<Integer> txtEditTaskPercentage;
+    @Inject InputElement<Long> txtEditTaskPercentage;
     @Inject InputElement<Date> txtEditTaskStartDate;
     @Inject InputElement<Date> txtEditTaskEndDate;
     @Inject InputElement<Date> txtEditTaskActualStartDate;
@@ -49,7 +49,7 @@ public class TaskEditValidator extends AbstractValidator implements Validator {
         Task parentTask = task.getParentTask();
         Task preTask = task.getPreTask();
 
-        if(txtEditTaskPercentage.getValue() == 100){
+        if(txtEditTaskPercentage.getValue() == 100l){
             // Error.
             doError(txtEditTaskPercentage, "Invalid task status !", "Can't modify completed task.");
         }
