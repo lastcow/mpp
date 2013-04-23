@@ -246,6 +246,10 @@ public @Named @ViewScoped class TaskController implements Serializable{
                 this.doModifyActualDate(subTask, daysToBeAdded);
             }
         }
+
+        if(editTask.getTaskActualEndDate() != null){
+            // TODO Modify parent task's estimated end date
+        }
 //        editTask.setDependentTasks(originalTask.getDependentTasks());
 //
 //        for(Task task : editTask.getDependentTasks()){
@@ -528,8 +532,8 @@ public @Named @ViewScoped class TaskController implements Serializable{
 
 
     public TaskController() {
-        LocalDate startDate = new LocalDate(2013, 4, 1);
-        LocalDate endDate = new LocalDate(2013, 4, 8);
+        LocalDate startDate = new LocalDate(2013, 4, 18);
+        LocalDate endDate = new LocalDate(2013, 4, 23);
 
         System.out.println("Days between: " + this.getWorkingHourBetweenTwoDate(startDate, endDate));
     }

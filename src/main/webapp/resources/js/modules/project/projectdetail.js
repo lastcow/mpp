@@ -186,6 +186,9 @@ function loadActual(){
 function onTaskClick(task){
 
     rememberTaskScrollPosition();
+
+    // Check for task status.
+    alert(task.getStatus().getStatusName());
     // Assign id to hidden field
     $('#editTaskId').val(task.getId())
     $('#btnEditTaskSubmitId').click();
