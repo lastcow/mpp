@@ -565,5 +565,8 @@ function confirmDelete(event, taskName){
                 }
             }
         });
+
+        // Insert to right position
+        $('.jqibox').insertBefore($('#divEditTaskForm'));
     }
 }
