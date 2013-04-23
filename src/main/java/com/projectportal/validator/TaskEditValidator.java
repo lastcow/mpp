@@ -64,6 +64,10 @@ public class TaskEditValidator extends AbstractValidator implements Validator {
                     // Error.
                     doError(txtEditTaskStartDate, "Invalid task start/end dates !", "Task start date must be after parent task start date");
                 }
+                if(txtEditTaskEndDate.getValue().compareTo(parentTask.getTaskEstimatedEndDate()) >0 ){
+                    // Error.
+                    doError(txtEditTaskEndDate, "Invalid task start/end dates !", "Task end date can't be after parent task end date");
+                }
             }
 
             // Check for the pretask.
