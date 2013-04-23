@@ -310,6 +310,10 @@ public @Named @ViewScoped class TaskController implements Serializable{
         }
         // Get from DB
         editTask = em.find(Task.class, editTask.getTaskId());
+        if(! editTask.getStatus().getStatusName().equals(Util.STATUS_NEW)){
+            // Assign actual start date to transent field.
+            editTask.setTaskActualStartDateTransient(editTask.getTaskActualStartDate());
+        }
 
         List<Task> tmpPreTaskList = new ArrayList<Task>();
         tmpPreTaskList.add(editTask.getPreTask());

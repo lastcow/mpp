@@ -46,6 +46,9 @@ public class Task implements Serializable {
 	@Column(nullable=false)
 	private float taskPercentComplete;
 
+    @Transient
+    private Date taskActualStartDateTransient;
+
 	//bi-directional many-to-one association to Priority
 	@ManyToOne
 	@JoinColumn(name="priorityId", nullable=false)
@@ -259,6 +262,14 @@ public class Task implements Serializable {
 
     public void setTaskActualDurationHour(int taskActualDurationHour) {
         this.taskActualDurationHour = taskActualDurationHour;
+    }
+
+    public Date getTaskActualStartDateTransient() {
+        return taskActualStartDateTransient;
+    }
+
+    public void setTaskActualStartDateTransient(Date taskActualStartDateTransient) {
+        this.taskActualStartDateTransient = taskActualStartDateTransient;
     }
 
     @Override

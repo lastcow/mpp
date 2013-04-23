@@ -295,7 +295,7 @@
                             <div class="rowElem">
                                 <h:outputLabel for='txtEditTaskActualStartDate'>Actual Start Date:</h:outputLabel>
                                 <div class="formRight" style="margin: 0;">
-                                    <h:inputText id='txtEditTaskActualStartDate' value='#{taskController.editTask.taskActualStartDate}' styleClass='#{component.valid?"":"invalid"}'
+                                    <h:inputText id='txtEditTaskActualStartDate' value='#{taskController.editTask.taskActualStartDateTransient}' styleClass='#{component.valid?"":"invalid"}'
                                                  requiredMessage='#{validate["task.startDate.emptyMessage"]}' style="width:100px !important;">
                                         <f:convertDateTime pattern="yyyy/MM/dd" />
                                     </h:inputText>
