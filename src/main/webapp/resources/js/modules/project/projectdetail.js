@@ -49,7 +49,7 @@ function initComponent(){
      */
     $('#divEditTaskForm').dialog({
         autoOpen: false,
-        modal: true,
+        modal: false,
         resizable: false,
         width: 600,
         buttons:{
