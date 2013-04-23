@@ -188,7 +188,7 @@ function onTaskClick(task){
     rememberTaskScrollPosition();
 
     // Check for task status.
-    alert(task.getStatus().getStatusName());
+    alert(task.getPercentCompleted());
     // Assign id to hidden field
     $('#editTaskId').val(task.getId())
     $('#btnEditTaskSubmitId').click();
