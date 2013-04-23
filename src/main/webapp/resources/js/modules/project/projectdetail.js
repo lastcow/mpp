@@ -54,7 +54,7 @@ function initComponent(){
         width: 600,
         buttons:{
             'Edit Task': function(){ $('#btnEditTaskSubmit').click(); },
-            'Delete Task': function() { $('#btnEditTaskDeleteSubmit').click(); },
+            'Delete Task': function() { $('#btnEditTaskDeleteSubmitConfirm').click(); },
             'Cancel': function(){$(this).dialog('close');}
         },
 
@@ -541,4 +541,29 @@ function rememberTaskScrollPosition(){
 function setTaskScrollPosition(){
     $('.taskPanel').parent().scrollLeft(taskPanelPositionLeft);
     $('.taskPanel').parent().scrollTop(taskPanelPositionTop);
+}
+
+/**
+ * Confirm delete
+ * @param event
+ * @param projectId
+ * @param projectName
+ */
+function confirmDelete(event, taskName){
+    if(event.status == "success"){
+        $.prompt("Are you sure want to delete task: <strong>" + taskName + "</strong> ?", {
+            title: "Confirm Deletion",
+            buttons: { "Delete": true, "No": false },
+            top: "40%",
+            submit: function(e,v,m,f){
+                // use e.preventDefault() to prevent closing when needed or return false.
+                // e.preventDefault();
+                if(v){
+                    // Delete (id been transformed to table:index:id)
+//                    $('#deleteProjectIdHidden').val(projectId);
+                    $('#btnEditTaskDeleteSubmit').click();
+                }
+            }
+        });
+    }
 }
