@@ -376,7 +376,7 @@
                         <f:ajax execute="@form" onerror="handleFormError" onevent="function(data) {editTaskEventHandler(data);}" render="@form" />
                     </h:commandButton>
                     <h:commandLink id="btnEditTaskDeleteSubmitConfirm">
-                        <f:ajax execute="" onevent="function(data) {confirmDelete(data, '#{taskController.editTask.name}');}" />
+                        <f:ajax execute="" onevent="function(data) {confirmDelete(data, '#{taskController.editTask.taskName}');}" />
                     </h:commandLink>
                     <h:commandButton id="btnEditTaskDeleteSubmit" action="#{taskController.delete}" style="display:none;">
                         <f:ajax execute="@form" onerror="handleFormError" onevent="function(data) {editTaskEventHandler(data);}" render="" immediate="true" />
