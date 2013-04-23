@@ -363,7 +363,8 @@ function isEditTaskFormValid(){
     return !($('#txtEditTaskName').hasClass('invalid') ||
         $('#txtEditTaskStartDate').hasClass('invalid') ||
         $('#txtEditTaskActualEndDate').hasClass('invalid') ||
-        $('#txtEditTaskActualStartDate').hasClass('invalid'));
+        $('#txtEditTaskActualStartDate').hasClass('invalid') ||
+        $('#txtEditTaskEndDate').hasClass('invalid'));
 }
 
 /**
