@@ -166,7 +166,10 @@ public @Named @ViewScoped class TaskController implements Serializable{
         int daysBetween = 0;
         DateTime editEndDate = null;
 
-
+        // Set the actual start date if modified.
+        if(editTask.getTaskActualStartDateTransient() != null){
+            editTask.setTaskActualStartDate(editTask.getTaskActualStartDateTransient());
+        }
 
         // Get estimated end date from DB.
         Task originalTask = em.find(Task.class, editTask.getTaskId());
@@ -180,6 +183,10 @@ public @Named @ViewScoped class TaskController implements Serializable{
 
         System.out.println("Days different: " + daysBetween);
 
+        // Status.
+        if(editTask.getTaskActualStartDate() != null){
+            editTask.setStatus(Util.getStatusByName(em, Util.STATUS_IN_PROGRESS));
+        }
         // If end date detected, task completed.
         if(editTask.getTaskActualEndDate() != null){
             editTask.setTaskPercentComplete(100f);
